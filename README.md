@@ -24,17 +24,13 @@ Represent a possible solution to the TSP as a permutation of the given cities an
 
 #### Exercise 4 - Variation operators
 
-- Implement the different mutation operators (insert, swap, inversion) for permuta- 
-
-  tions given in the lecture. 
+- Implement the different mutation operators (insert, swap, inversion) for permutations given in the lecture. 
 
 - Implement the different crossover operators (Order Crossover, PMX Crossover, Cy- cle Crossover, Edge Recombination) for permutations given in the lecture. 
 
 #### Exercise 5 - Selection
 
-Implement the different selection methods (fitness-proportional, tournament selection, 
-
-elitism) given in the lecture. 
+Implement the different selection methods (fitness-proportional, tournament selection, elitism) given in the lecture. 
 
 #### Exercise 6 - Evolutionary Algorithms and Benchmarking
 
