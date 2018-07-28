@@ -73,8 +73,8 @@ elitism) given in the lecture.
 
 You can choose git or http to clone this repository
 
-> git clone git@github.com:HubHop/Evolutionary-Computation-Assignments.git
+> git clone git@github.com:HubHop/EC-Assignments.git
 
-> git clone https://github.com/HubHop/Evolutionary-Computation-Assignments.git
+> git clone https://github.com/HubHop/EC-Assignments.git
 
 Make sure you have already set up your git environment in your laptop and have ssh keys.
