@@ -41,7 +41,7 @@ Implement the different selection methods (fitness-proportional, tournament sele
 
 #### Exercise 7 - Inver-over Evolutionary Algorithm 
 
-- Readthepaper”Inver-overOperatorfortheTSP”byGuoTao,ZbigniewMichalewicz available at 
+- Read the paper "Inver-overOperatorfortheTSP" by GuoTao, Zbigniew Michalewicz available at 
   http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf
 
 - Implement the algorithm as described in the paper. 
