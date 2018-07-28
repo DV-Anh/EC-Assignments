@@ -10,15 +10,11 @@
 
 Write a class TSP-Problem which represents the TSP problem. Your class should enable the construction of TSP problems from the files of the symmetric traveling salesman problem (EDGE WEIGHT TYPE : EUC 2D) of the TSPlib which is available at 
 
-```
 http://elib.zib.de/pub/mp-testdata/tsp/tsplib/tsp/index.html
-```
 
 #### Exercise 2 - Local Search 
 
-- Implement three local search algorithms based on jump, exchange and 2-opt neigh- 
-
-  bourhoods as described in the lecture. 
+- Implement three local search algorithms based on jump, exchange and 2-opt neighbourhoods as described in the lecture. 
 
 - Test your local algorithms on the instances EIL51, EIL76, EIL101, ST70, KROA100, KROC100, KROD100, LIN105, PCB442, PR2392, USA13509 from TSPlib. Run each local search algorithm on each instance 30 times where in each run the initial permutation is chosen uniformly at random. Report for each algorithm on each instance the minimum and mean tour length obtained in a table. Summarize and compare the results obtained in 1-2 paragraphs. 
 
@@ -50,10 +46,7 @@ elitism) given in the lecture.
 #### Exercise 7 - Inver-over Evolutionary Algorithm 
 
 - Readthepaper”Inver-overOperatorfortheTSP”byGuoTao,ZbigniewMichalewicz available at 
-
-  ```
   http://www.cs.adelaide.edu.au/~zbyszek/Papers/p44.pdf
-  ```
 
 - Implement the algorithm as described in the paper. 
 - Run the inver-over algorithm with a population size of 50 for 20000 generations on the TSPlib instances mentioned above. Run the algorithm on each instance 30 times. Report the average cost of the tour you obtained for each instance as well the standard deviation. 
