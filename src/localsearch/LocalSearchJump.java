@@ -27,7 +27,8 @@ public class LocalSearchJump extends LocalSearch {
     private boolean isBetween(int a, int b, int c){
         return (b > a && a > c) || (b < a && a < c);
     }
-    // Override to support asymmetrical neighbor generator
+
+    // Override to support asymmetrical neighbor generator and improve performance
     @Override
     public int[] search(TSPProblem problem){
         int size = problem.size();
@@ -36,27 +37,42 @@ public class LocalSearchJump extends LocalSearch {
         int[] nextSolution = currentSolution;
         double currentCost = cost(problem, currentSolution);
         double nextCost = currentCost;
+        if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
         do{
             currentSolution = nextSolution;
             currentCost = nextCost;
+            // Variable holding pair of jump indexes for best neighbor
+            int besti, bestj = besti = 0;
             // Iterate through all neighbors and pick the best one
             for (int i = 0; i < size - 1; i++) {
+                int ileft = (i - 1 + size) % size, iright = i + 1;
                 for (int j = i + 1; j < size; j++) {
-                    // This part is modified to support asymmetrical operator
-                    int[] neighbor1 = generateNeighbor(currentSolution, i, j);
-                    int[] neighbor2 = generateNeighbor(currentSolution, j, i);
-                    double neighborCost1 = cost(problem, neighbor1);
-                    double neighborCost2 = cost(problem, neighbor2);
+                    if(ileft == j) continue;
+                    int jleft = j - 1, jright = (j + 1) % size;
+                    // 3-opt (replacing 3 edges) and 2 neighbors since jump is asymmetrical
+                    double neighborCost1 = currentCost - problem.distance(currentSolution[i], currentSolution[ileft])
+                            - problem.distance(currentSolution[i], currentSolution[iright])
+                            - problem.distance(currentSolution[j], currentSolution[jright])
+                            + problem.distance(currentSolution[ileft], currentSolution[iright])
+                            + problem.distance(currentSolution[i], currentSolution[j])
+                            + problem.distance(currentSolution[i], currentSolution[jright]);
+                    double neighborCost2 = currentCost - problem.distance(currentSolution[j], currentSolution[jleft])
+                            - problem.distance(currentSolution[j], currentSolution[jright])
+                            - problem.distance(currentSolution[i], currentSolution[ileft])
+                            + problem.distance(currentSolution[jleft], currentSolution[jright])
+                            + problem.distance(currentSolution[i], currentSolution[j])
+                            + problem.distance(currentSolution[j], currentSolution[ileft]);
                     if(neighborCost1 < nextCost){
                         nextCost = neighborCost1;
-                        nextSolution = neighbor1;
+                        besti = i; bestj = j;
                     }if(neighborCost2 < nextCost){
                         nextCost = neighborCost2;
-                        nextSolution = neighbor2;
+                        besti = j; bestj = i;
                     }
                 }
-            }
+            }nextSolution = generateNeighbor(currentSolution, besti, bestj);
+            nextCost = cost(problem, nextSolution);
         }while(nextCost < currentCost);
         return currentSolution;
     }

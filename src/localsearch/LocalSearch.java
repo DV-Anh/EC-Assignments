@@ -13,6 +13,7 @@ public abstract class LocalSearch {
     }
     /**
      * Generates and returns a neighbor candidate of the given candidate with 2 index parameters
+     * This is the default function and can be overridden to customize
      * @param candidate input candidate
      * @param i generation parameter
      * @param j generation parameter
@@ -50,6 +51,7 @@ public abstract class LocalSearch {
         int[] nextSolution = currentSolution;
         double currentCost = cost(problem, currentSolution);
         double nextCost = currentCost;
+        if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
         do{
             currentSolution = nextSolution;
