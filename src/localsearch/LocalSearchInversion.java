@@ -6,6 +6,7 @@ public class LocalSearchInversion extends LocalSearch {
     public LocalSearchInversion(TSPProblem problem){
         super(problem);
     }
+    public LocalSearchInversion(){super();}
     // Inversion operator
     @Override
     int[] generateNeighbor(int[] candidate, int i, int j) {
@@ -34,7 +35,7 @@ public class LocalSearchInversion extends LocalSearch {
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
         int[] nextSolution = currentSolution;
-        double currentCost = cost(problem, currentSolution);
+        double currentCost = problem.cost(currentSolution);
         double nextCost = currentCost;
         if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
@@ -60,7 +61,7 @@ public class LocalSearchInversion extends LocalSearch {
                     }
                 }
             }nextSolution = generateNeighbor(currentSolution, besti, bestj);
-            nextCost = cost(problem, nextSolution);
+            nextCost = problem.cost(nextSolution);
         }while(nextCost < currentCost);
         return currentSolution;
     }

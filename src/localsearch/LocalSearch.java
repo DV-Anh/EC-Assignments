@@ -9,8 +9,9 @@ public abstract class LocalSearch {
     double cost;
     public LocalSearch(TSPProblem problem){
         result = search(problem);
-        cost = cost(problem, result);
+        cost = problem.cost(result);
     }
+    public LocalSearch(){}
     /**
      * Generates and returns a neighbor candidate of the given candidate with 2 index parameters
      * This is the default function and can be overridden to customize
@@ -49,7 +50,7 @@ public abstract class LocalSearch {
         // Generate initial permutation
         int[] currentSolution = generateRandomPermutation(size);
         int[] nextSolution = currentSolution;
-        double currentCost = cost(problem, currentSolution);
+        double currentCost = problem.cost(currentSolution);
         double nextCost = currentCost;
         if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
@@ -60,7 +61,7 @@ public abstract class LocalSearch {
             for (int i = 0; i < size - 1; i++) {
                 for (int j = i + 1; j < size; j++) {
                     int[] neighbor = generateNeighbor(currentSolution, i, j);
-                    double neighborCost = cost(problem, neighbor);
+                    double neighborCost = problem.cost(neighbor);
                     if(neighborCost < nextCost){
                         nextCost = neighborCost;
                         nextSolution = neighbor;
@@ -69,18 +70,5 @@ public abstract class LocalSearch {
             }
         }while(nextCost < currentCost);
         return currentSolution;
-    }
-
-    /**
-     * Returns cost of the given candidate in given TSP
-     * @param problem the TSP
-     * @param candidate the candidate
-     * @return the cost
-     */
-    public double cost(TSPProblem problem, int[] candidate){
-        double cost = 0;
-        for (int i = 0; i < candidate.length - 1; i++) {
-            cost += problem.distance(candidate[i], candidate[i + 1]);
-        }return cost + problem.distance(candidate[candidate.length - 1], candidate[0]);
     }
 }

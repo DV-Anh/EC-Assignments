@@ -61,22 +61,33 @@ public class TSPProblem {
         return Math.sqrt(Math.pow(coordinates2D[0][i] - coordinates2D[0][j],2) +
                          Math.pow(coordinates2D[1][i] - coordinates2D[1][j],2));
     }
+    /**
+     * Returns cost of the given candidate in given TSP
+     * @param candidate the candidate
+     * @return the cost
+     */
+    public double cost(int[] candidate){
+        double cost = 0;
+        for (int i = 0; i < candidate.length - 1; i++) {
+            cost += distance(candidate[i], candidate[i + 1]);
+        }return cost + distance(candidate[candidate.length - 1], candidate[0]);
+    }
     // Unit testing
     public static void main(String[] args){
         // Using the class by passing file name into constructor
         for (int i = 0; i < Constants.TESTFIES.length; i++) {
             System.out.println(Constants.TESTFIES[i]);
             TSPProblem t = new TSPProblem(Constants.TESTFIES[i]);
-            LocalSearch l1 = new LocalSearchExchange(t);
-            LocalSearch l2 = new LocalSearchInversion(t);
-            LocalSearch l3 = new LocalSearchJump(t);
+            LocalSearch l1 = new LocalSearchExchange();
+            LocalSearch l2 = new LocalSearchInversion();
+            LocalSearch l3 = new LocalSearchJump();
             double min1, min2, min3 = min2 = min1 = Double.POSITIVE_INFINITY;
             double sum1, sum2, sum3 = sum2 = sum1 = 0;
             int n = 30;
             for (int j = 0; j < n; j++) {
-                double c1 = l1.cost(t, l1.search(t));
-                double c2 = l2.cost(t, l2.search(t));
-                double c3 = l3.cost(t, l3.search(t));
+                double c1 = t.cost(l1.search(t));
+                double c2 = t.cost(l2.search(t));
+                double c3 = t.cost(l3.search(t));
                 sum1 += c1;
                 sum2 += c2;
                 sum3 += c3;

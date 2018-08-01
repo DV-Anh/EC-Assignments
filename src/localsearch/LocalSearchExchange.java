@@ -6,6 +6,7 @@ public class LocalSearchExchange extends LocalSearch {
     public LocalSearchExchange(TSPProblem problem){
         super(problem);
     }
+    public LocalSearchExchange(){super();}
     // Exchange operator
     @Override
     int[] generateNeighbor(int[] candidate, int i, int j) {
@@ -23,7 +24,7 @@ public class LocalSearchExchange extends LocalSearch {
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
         int[] nextSolution = currentSolution;
-        double currentCost = cost(problem, currentSolution);
+        double currentCost = problem.cost(currentSolution);
         double nextCost = currentCost;
         if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
@@ -65,7 +66,7 @@ public class LocalSearchExchange extends LocalSearch {
                     }
                 }
             }nextSolution = generateNeighbor(currentSolution, besti, bestj);
-            nextCost = cost(problem, nextSolution);
+            nextCost = problem.cost(nextSolution);
         }while(nextCost < currentCost);
         return currentSolution;
     }
