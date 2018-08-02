@@ -9,13 +9,13 @@ public class LocalSearchJump extends LocalSearch {
     public LocalSearchJump(){super();}
     // Jump operator
     @Override
-    int[] generateNeighbor(int[] candidate, int i, int j) {
-        int[] neighbor = new int[candidate.length];
+    void generateNeighbor(int[] candidate, int i, int j) {
         int dir = Integer.compare(j, i);
-        for (int k = 0; k < neighbor.length; k++) {
-            neighbor[k] = candidate[k == i ? k + dir : k == j ? i : isBetween(k, i, j) ? k + dir : k];
+        int temp = candidate[i];
+        for (int k = i + dir; k != j; k += dir) {
+            candidate[k - dir] = candidate[k];
         }
-        return neighbor;
+        candidate[j] = temp;
     }
 
     /**
@@ -35,45 +35,45 @@ public class LocalSearchJump extends LocalSearch {
         int size = problem.size();
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
-        int[] nextSolution = currentSolution;
         double currentCost = problem.cost(currentSolution);
         double nextCost = currentCost;
         if(size <= 2) return currentSolution;
         // Iterate until no better neighbor available
         do{
-            currentSolution = nextSolution;
             currentCost = nextCost;
             // Variable holding pair of jump indexes for best neighbor
             int besti, bestj = besti = 0;
+            double currentCostChange = 0;
             // Iterate through all neighbors and pick the best one
+            neighborloop:
             for (int i = 0; i < size - 1; i++) {
                 int ileft = (i - 1 + size) % size, iright = i + 1;
                 for (int j = i + 1; j < size; j++) {
                     if(ileft == j) continue;
                     int jleft = j - 1, jright = (j + 1) % size;
                     // 3-opt (replacing 3 edges) and 2 neighbors since jump is asymmetrical
-                    double neighborCost1 = currentCost - problem.distance(currentSolution[i], currentSolution[ileft])
-                            - problem.distance(currentSolution[i], currentSolution[iright])
-                            - problem.distance(currentSolution[j], currentSolution[jright])
-                            + problem.distance(currentSolution[ileft], currentSolution[iright])
-                            + problem.distance(currentSolution[i], currentSolution[j])
-                            + problem.distance(currentSolution[i], currentSolution[jright]);
-                    double neighborCost2 = currentCost - problem.distance(currentSolution[j], currentSolution[jleft])
-                            - problem.distance(currentSolution[j], currentSolution[jright])
-                            - problem.distance(currentSolution[i], currentSolution[ileft])
-                            + problem.distance(currentSolution[jleft], currentSolution[jright])
-                            + problem.distance(currentSolution[i], currentSolution[j])
-                            + problem.distance(currentSolution[j], currentSolution[ileft]);
-                    if(neighborCost1 < nextCost){
-                        nextCost = neighborCost1;
-                        besti = i; bestj = j;
-                    }if(neighborCost2 < nextCost){
-                        nextCost = neighborCost2;
-                        besti = j; bestj = i;
+                    double costChange1 = 0 - problem.distanceSquare(currentSolution[i], currentSolution[ileft])
+                            - problem.distanceSquare(currentSolution[i], currentSolution[iright])
+                            - problem.distanceSquare(currentSolution[j], currentSolution[jright])
+                            + problem.distanceSquare(currentSolution[ileft], currentSolution[iright])
+                            + problem.distanceSquare(currentSolution[i], currentSolution[j])
+                            + problem.distanceSquare(currentSolution[i], currentSolution[jright]);
+                    double costChange2 = 0 - problem.distanceSquare(currentSolution[j], currentSolution[jleft])
+                            - problem.distanceSquare(currentSolution[j], currentSolution[jright])
+                            - problem.distanceSquare(currentSolution[i], currentSolution[ileft])
+                            + problem.distanceSquare(currentSolution[jleft], currentSolution[jright])
+                            + problem.distanceSquare(currentSolution[i], currentSolution[j])
+                            + problem.distanceSquare(currentSolution[j], currentSolution[ileft]);
+                    if(costChange1 < currentCostChange){
+                        currentCostChange = costChange1;
+                        besti = i; bestj = j;//break neighborloop;
+                    }if(costChange2 < currentCostChange){
+                        currentCostChange = costChange2;
+                        besti = j; bestj = i;//break neighborloop;
                     }
                 }
-            }nextSolution = generateNeighbor(currentSolution, besti, bestj);
-            nextCost = problem.cost(nextSolution);
+            }generateNeighbor(currentSolution, besti, bestj);
+            nextCost = problem.cost(currentSolution);
         }while(nextCost < currentCost);
         return currentSolution;
     }

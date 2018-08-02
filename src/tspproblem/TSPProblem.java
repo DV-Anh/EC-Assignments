@@ -15,7 +15,7 @@ public class TSPProblem {
     public double[][] coordinates2D = new double[2][];
 
     /**
-     * Constructor read file name, read and store TSP from the file to array of coordinates
+     * Constructor reads file name, read and store TSP from the file to array of coordinates
      * @param filename name of problem file
      */
     public TSPProblem(String filename){
@@ -23,7 +23,7 @@ public class TSPProblem {
         try (BufferedReader br = new BufferedReader(new FileReader(new File(Constants.TESTPATH + filename)))){
             int coordIndex = -1;
             for(String line; (line = br.readLine()) != null;){
-                if(line.startsWith(Constants.EOF)) break;
+                if(line.startsWith(Constants.EOF) || line.trim().length() < 1) break;
                 if(coordIndex >= 0){
                     String[] linePart = line.split(Constants.COORD_DELIMITER);
                     coordinates2D[0][coordIndex] = Double.valueOf(linePart[1]);
@@ -58,11 +58,23 @@ public class TSPProblem {
      * @return distance from node i to node j
      */
     public double distance(int i, int j){
-        return Math.sqrt(Math.pow(coordinates2D[0][i] - coordinates2D[0][j],2) +
-                         Math.pow(coordinates2D[1][i] - coordinates2D[1][j],2));
+        double dx = coordinates2D[0][i] - coordinates2D[0][j];
+        double dy = coordinates2D[1][i] - coordinates2D[1][j];
+        return Math.sqrt(dx*dx + dy*dy);
     }
     /**
-     * Returns cost of the given candidate in given TSP
+     * Return squared distance from node i to node j
+     * @param i index i
+     * @param j index j
+     * @return distance from node i to node j
+     */
+    public double distanceSquare(int i, int j){
+        double dx = coordinates2D[0][i] - coordinates2D[0][j];
+        double dy = coordinates2D[1][i] - coordinates2D[1][j];
+        return dx*dx + dy*dy;
+    }
+    /**
+     * Returns cost of the given candidate
      * @param candidate the candidate
      * @return the cost
      */
@@ -75,7 +87,7 @@ public class TSPProblem {
     // Unit testing
     public static void main(String[] args){
         // Using the class by passing file name into constructor
-        for (int i = 0; i < Constants.TESTFIES.length; i++) {
+        for (int i = 9; i < Constants.TESTFIES.length; i++) {
             System.out.println(Constants.TESTFIES[i]);
             TSPProblem t = new TSPProblem(Constants.TESTFIES[i]);
             LocalSearch l1 = new LocalSearchExchange();
@@ -86,8 +98,11 @@ public class TSPProblem {
             int n = 30;
             for (int j = 0; j < n; j++) {
                 double c1 = t.cost(l1.search(t));
+                System.out.println(c1);
                 double c2 = t.cost(l2.search(t));
+                System.out.println(c2);
                 double c3 = t.cost(l3.search(t));
+                System.out.println(c3);
                 sum1 += c1;
                 sum2 += c2;
                 sum3 += c3;
