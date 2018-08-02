@@ -1,5 +1,6 @@
 package localsearch;
 
+import constants.Constants;
 import tspproblem.TSPProblem;
 
 public class LocalSearchInversion extends LocalSearch {
@@ -38,17 +39,17 @@ public class LocalSearchInversion extends LocalSearch {
                     if(ileft == j) continue;
                     int jleft = j - 1, jright = (j + 1) % size;
                     // 2-opt (replacing 2 edges)
-                    double costChange = 0 - problem.distanceSquare(currentSolution[i], currentSolution[ileft])
-                            - problem.distanceSquare(currentSolution[j], currentSolution[jright])
-                            + problem.distanceSquare(currentSolution[i], currentSolution[jright])
-                            + problem.distanceSquare(currentSolution[j], currentSolution[ileft]);
+                    double costChange = 0 - problem.distance(currentSolution[i], currentSolution[ileft])
+                            - problem.distance(currentSolution[j], currentSolution[jright])
+                            + problem.distance(currentSolution[i], currentSolution[jright])
+                            + problem.distance(currentSolution[j], currentSolution[ileft]);
                     if(costChange < currentCostChange){
                         currentCostChange = costChange;
                         besti = i; bestj = j;//break neighborloop;
                     }
                 }
             }generateNeighbor(currentSolution, besti, bestj);
-        }while(currentCostChange < 0);
+        }while(currentCostChange < -Constants.LOCALSEARCH_THRES);
         return currentSolution;
     }
 }

@@ -27,4 +27,5 @@ public final class Constants {
     public static final String DIMENSION = "DIMENSION";
     public static final String HEADER_DELIMITER = ":";
     public static final String COORD_DELIMITER = " ";
+    public static final double LOCALSEARCH_THRES = 0.0000001;
 }

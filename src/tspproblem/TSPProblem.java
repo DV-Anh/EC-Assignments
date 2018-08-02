@@ -47,7 +47,7 @@ public class TSPProblem {
 
     /**
      * Returns size of TSP
-     * @return
+     * @return size of TSP
      */
     public int size(){return coordinates2D[0].length;}
 
@@ -87,7 +87,7 @@ public class TSPProblem {
     // Unit testing
     public static void main(String[] args){
         // Using the class by passing file name into constructor
-        for (int i = 0; i < Constants.TESTFIES.length; i++) {
+        for (int i = 9; i < Constants.TESTFIES.length; i++) {
             System.out.println(Constants.TESTFIES[i]);
             TSPProblem t = new TSPProblem(Constants.TESTFIES[i]);
             LocalSearch l1 = new LocalSearchExchange();

@@ -1,5 +1,6 @@
 package localsearch;
 
+import constants.Constants;
 import tspproblem.TSPProblem;
 
 public class LocalSearchExchange extends LocalSearch {
@@ -37,24 +38,24 @@ public class LocalSearchExchange extends LocalSearch {
                     // 4-opt (replacing 4 edges)
                     double costChange = 0;
                     if(iright == j){
-                        costChange += problem.distanceSquare(currentSolution[j],currentSolution[ileft])
-                        + problem.distanceSquare(currentSolution[i],currentSolution[jright])
-                        - problem.distanceSquare(currentSolution[i],currentSolution[ileft])
-                        - problem.distanceSquare(currentSolution[j],currentSolution[jright]);
+                        costChange += problem.distance(currentSolution[j],currentSolution[ileft])
+                        + problem.distance(currentSolution[i],currentSolution[jright])
+                        - problem.distance(currentSolution[i],currentSolution[ileft])
+                        - problem.distance(currentSolution[j],currentSolution[jright]);
                     }else if(ileft == j){
-                        costChange += problem.distanceSquare(currentSolution[j],currentSolution[iright])
-                                + problem.distanceSquare(currentSolution[i],currentSolution[jleft])
-                                - problem.distanceSquare(currentSolution[i],currentSolution[iright])
-                                - problem.distanceSquare(currentSolution[j],currentSolution[jleft]);
+                        costChange += problem.distance(currentSolution[j],currentSolution[iright])
+                                + problem.distance(currentSolution[i],currentSolution[jleft])
+                                - problem.distance(currentSolution[i],currentSolution[iright])
+                                - problem.distance(currentSolution[j],currentSolution[jleft]);
                     }else{
-                        costChange += problem.distanceSquare(currentSolution[i],currentSolution[jleft])
-                                + problem.distanceSquare(currentSolution[j],currentSolution[iright])
-                                + problem.distanceSquare(currentSolution[j],currentSolution[ileft])
-                                + problem.distanceSquare(currentSolution[i],currentSolution[jright])
-                                - problem.distanceSquare(currentSolution[i],currentSolution[ileft])
-                                - problem.distanceSquare(currentSolution[j],currentSolution[jright])
-                                - problem.distanceSquare(currentSolution[i],currentSolution[iright])
-                                - problem.distanceSquare(currentSolution[j],currentSolution[jleft]);
+                        costChange += problem.distance(currentSolution[i],currentSolution[jleft])
+                                + problem.distance(currentSolution[j],currentSolution[iright])
+                                + problem.distance(currentSolution[j],currentSolution[ileft])
+                                + problem.distance(currentSolution[i],currentSolution[jright])
+                                - problem.distance(currentSolution[i],currentSolution[ileft])
+                                - problem.distance(currentSolution[j],currentSolution[jright])
+                                - problem.distance(currentSolution[i],currentSolution[iright])
+                                - problem.distance(currentSolution[j],currentSolution[jleft]);
                     }
                     if(costChange < currentCostChange){
                         currentCostChange = costChange;
@@ -62,7 +63,7 @@ public class LocalSearchExchange extends LocalSearch {
                     }
                 }
             }generateNeighbor(currentSolution, besti, bestj);
-        }while(currentCostChange < 0);
+        }while(currentCostChange < -Constants.LOCALSEARCH_THRES);
         return currentSolution;
     }
 }
