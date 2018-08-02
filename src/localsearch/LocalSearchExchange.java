@@ -21,15 +21,13 @@ public class LocalSearchExchange extends LocalSearch {
         int size = problem.size();
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
-        double currentCost = problem.cost(currentSolution);
-        double nextCost = currentCost;
         if(size <= 2) return currentSolution;
+        double currentCostChange;
         // Iterate until no better neighbor available
         do{
-            currentCost = nextCost;
             // Variable holding pair of jump indexes for best neighbor
             int besti, bestj = besti = 0;
-            double currentCostChange = 0;
+            currentCostChange = 0;
             // Iterate through all neighbors and pick the best one
             neighborloop:
             for (int i = 0; i < size - 1; i++) {
@@ -64,8 +62,7 @@ public class LocalSearchExchange extends LocalSearch {
                     }
                 }
             }generateNeighbor(currentSolution, besti, bestj);
-            nextCost = problem.cost(currentSolution);
-        }while(nextCost < currentCost);
+        }while(currentCostChange < 0);
         return currentSolution;
     }
 }

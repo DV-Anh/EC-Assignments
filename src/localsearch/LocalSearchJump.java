@@ -10,10 +10,10 @@ public class LocalSearchJump extends LocalSearch {
     // Jump operator
     @Override
     void generateNeighbor(int[] candidate, int i, int j) {
-        int dir = Integer.compare(j, i);
+        int dir = j > i ? 1 : -1;
         int temp = candidate[i];
-        for (int k = i + dir; k != j; k += dir) {
-            candidate[k - dir] = candidate[k];
+        for (int k = i; k != j; k += dir) {
+            candidate[k] = candidate[k + dir];
         }
         candidate[j] = temp;
     }
@@ -35,15 +35,13 @@ public class LocalSearchJump extends LocalSearch {
         int size = problem.size();
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
-        double currentCost = problem.cost(currentSolution);
-        double nextCost = currentCost;
         if(size <= 2) return currentSolution;
+        double currentCostChange;
         // Iterate until no better neighbor available
         do{
-            currentCost = nextCost;
             // Variable holding pair of jump indexes for best neighbor
             int besti, bestj = besti = 0;
-            double currentCostChange = 0;
+            currentCostChange = 0;
             // Iterate through all neighbors and pick the best one
             neighborloop:
             for (int i = 0; i < size - 1; i++) {
@@ -73,8 +71,7 @@ public class LocalSearchJump extends LocalSearch {
                     }
                 }
             }generateNeighbor(currentSolution, besti, bestj);
-            nextCost = problem.cost(currentSolution);
-        }while(nextCost < currentCost);
+        }while(currentCostChange < 0);
         return currentSolution;
     }
 }

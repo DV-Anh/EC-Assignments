@@ -87,7 +87,7 @@ public class TSPProblem {
     // Unit testing
     public static void main(String[] args){
         // Using the class by passing file name into constructor
-        for (int i = 9; i < Constants.TESTFIES.length; i++) {
+        for (int i = 0; i < Constants.TESTFIES.length; i++) {
             System.out.println(Constants.TESTFIES[i]);
             TSPProblem t = new TSPProblem(Constants.TESTFIES[i]);
             LocalSearch l1 = new LocalSearchExchange();
@@ -98,18 +98,20 @@ public class TSPProblem {
             int n = 30;
             for (int j = 0; j < n; j++) {
                 double c1 = t.cost(l1.search(t));
-                System.out.println(c1);
+                //System.out.println(c1);
                 double c2 = t.cost(l2.search(t));
-                System.out.println(c2);
+                //System.out.println(c2);
                 double c3 = t.cost(l3.search(t));
-                System.out.println(c3);
+                //System.out.println(c3);
                 sum1 += c1;
                 sum2 += c2;
                 sum3 += c3;
                 min1 = min1 > c1 ? c1 : min1;
                 min2 = min2 > c2 ? c2 : min2;
                 min3 = min3 > c3 ? c3 : min3;
+                System.out.print(" "+j);
             }
+            System.out.println();
             System.out.println(min1 + " - " + sum1 / n);
             System.out.println(min2 + " - " + sum2 / n);
             System.out.println(min3 + " - " + sum3 / n);
