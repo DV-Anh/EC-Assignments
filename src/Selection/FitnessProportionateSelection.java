@@ -15,15 +15,20 @@ public class FitnessProportionateSelection {
 
         double[] selectedElements =new double[selectionNum];
         int currentMembersNum=0;
-        int indexOfArrays=0;
         while (currentMembersNum<selectionNum)
         {
-            while(matingPool[indexOfArrays%matingPool.length]/sum < Math.random())//数组越界
+            int indexOfArrays=0;
+            double random=Math.random();
+            while( matingPool[indexOfArrays]/sum < random)//数组越界
             {
                 indexOfArrays++;
+                if(indexOfArrays+1>=matingPool.length)
+                {
+                    break;
+                }
             }
-            if(!whetherInArray(selectedElements,matingPool[indexOfArrays%matingPool.length])) {
-                selectedElements[currentMembersNum] = matingPool[indexOfArrays % matingPool.length];
+            if(!whetherInArray(selectedElements,matingPool[indexOfArrays])) {
+                selectedElements[currentMembersNum] = matingPool[indexOfArrays ];
                 currentMembersNum++;
             }
         }
@@ -50,7 +55,7 @@ public class FitnessProportionateSelection {
     public static void main(String[] args)
     {
         FitnessProportionateSelection a=new FitnessProportionateSelection();
-        double[] ss=a.selection(new double[] {5,18,91,23,66,56,45,76,235},3);
+        double[] ss=a.selection(new double[] {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16},5);
         for(double sss:ss)
         {
             System.out.println(sss);
