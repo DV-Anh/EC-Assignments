@@ -28,10 +28,10 @@ public class Individual {
 		}
 	}
 	
-	public void calculateCost(TSPProblem tsp)
+	public double calculateCost(TSPProblem tsp)
 	{
 		cost=tsp.cost(permutation);
-		
+		return cost;
 	}
 	
 	public Individual clone()
