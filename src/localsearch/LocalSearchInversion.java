@@ -25,7 +25,7 @@ public class LocalSearchInversion extends LocalSearch {
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
         if(size <= 2) return currentSolution;
-        double currentCostChange = 0;
+        double currentCostChange;
         // Iterate until no better neighbor available
         do{
             // Variable holding pair of jump indexes for best neighbor

@@ -65,7 +65,7 @@ public abstract class LocalSearch {
                         besti = i; bestj = j;
                     }generateNeighbor(currentSolution, j, i);
                 }
-            }generateNeighbor(currentSolution, besti, besti);
+            }generateNeighbor(currentSolution, besti, bestj);
         }while(nextCost < currentCost);
         return currentSolution;
     }

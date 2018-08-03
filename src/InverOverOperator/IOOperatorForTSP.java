@@ -30,8 +30,8 @@ import java.util.*;
 
 public class IOOperatorForTSP {
 
-    public double lastMinCost;
-    public int population = 10;
+    public double lastMinCost = Double.POSITIVE_INFINITY;
+    public int population = 100;
 
     float p = 0.02f;
     int times = 0;
@@ -48,8 +48,8 @@ public class IOOperatorForTSP {
     public void generatePopulation() {
         for (int i = 0; i < population; i++) {
             List<Integer> list = new ArrayList<Integer>();
-            for (int j = 1; j < problem.size(); j++)
-                list.add(new Integer(j));
+            for (int j = 0; j < problem.size(); j++)
+                list.add(j);
             Collections.shuffle(list);
             populationList.add(list);
         }
@@ -63,36 +63,25 @@ public class IOOperatorForTSP {
         return cost + problem.distance(S.get(S.size() - 1), S.get(0));
     }
 
-    public double getMinCost(ArrayList<List<Integer>> populationList) {
-        double currentCost = 0;
-        double minCost = 0;
+    public double getMinCost() {
+        double minCost = Double.POSITIVE_INFINITY;
         for (int i = 0; i< populationList.size(); i++) {
             List<Integer> individual = populationList.get(i);
-            currentCost = getCost(individual);
-            if (i == 0) {
-                minCost = currentCost;
-            }
-
-            //minCost = currentCost;
-            if (currentCost < minCost) {
-                minCost = currentCost;
-            }
+            double currentCost = getCost(individual);
+            minCost = minCost > currentCost ? currentCost : minCost;
         }
         return minCost;
     }
 
-    public boolean satifiedTermination(ArrayList<List<Integer>> populationList) {
-        double currentCost = getMinCost(populationList);
-        if (times == 0) {
-            lastMinCost = currentCost;
-            return false;
-        }
+    public boolean satifiedTermination() {
+        double currentCost = getMinCost();
+        if(times >= 20000) {return true;}
         if (currentCost < lastMinCost) {
             lastMinCost = currentCost;
             equalTimes = 0;
             return false;
         } else {
-            if (equalTimes >= 50) {
+            if (equalTimes >= 500) {
                 return true;
             }
             equalTimes ++;
@@ -101,46 +90,34 @@ public class IOOperatorForTSP {
 
     }
 
-    public static int getNeighborFromIndividual(List<Integer> individual, int c) {
-        for (int i = 0; i < individual.size(); i++) {
-            int cp  = individual.get(i);
-            if (cp == c) {
-                if (i == individual.size() - 1) {
-                    return -1;
-                }
-                return individual.get(i + 1);
-            }
-        }
-        return -1;
+    public static int getNextIndexFromIndividual(List<Integer> individual, int c) {
+        // Wrap around
+        return (individual.indexOf(c) + 1) % individual.size();
     }
 
     public static void inverseSection(List<Integer> S, int c, int cp) {
-        int cIndex = S.indexOf(c);
-        int cpIndex = S.indexOf(cp);
-        if (cIndex < cpIndex) {
-            List<Integer> middlePart = S.subList(cIndex, cpIndex);
-            Collections.reverse(middlePart);
-        } else {
-            List<Integer> middlePart = S.subList(cpIndex, cIndex);
-            Collections.reverse(middlePart);
+        int dir = cp > c ? 1 : -1;
+        for (int i = c, j = cp; cp > c ? i < j: i > j ; i += dir, j -= dir) {
+            int temp = S.get(i);
+            S.set(i, S.get(j));
+            S.set(j, temp);
         }
     }
 
     public void copyList(List<Integer> l1, List<Integer> l2) {
         for (int i : l2) {
-            l1.add(new Integer(i));
+            l1.add(i);
         }
     }
-
     public void inverOverCalculate() {
+        this.populationList.clear();
         generatePopulation();
-
-
-        while (!satifiedTermination(populationList)) {
+        Random rd = new Random();
+        times = 0; equalTimes = 0;
+        while (!satifiedTermination()) {
             for (int i = 0; i < populationList.size(); i++) {
-                List<Integer> S = new ArrayList<Integer>();
+                List<Integer> S = new ArrayList<>();
                 copyList(S, populationList.get(i));
-                Random rd = new Random();
                 int c = S.get(rd.nextInt(S.size()));
                 int cp;
                 int whileTime = 0;
@@ -154,18 +131,19 @@ public class IOOperatorForTSP {
                         }while (cp == c);
                     } else {
                         // select (randomly) an individual from P
-                        List<Integer> randIndividual;
-                        do {
-                            randIndividual = populationList.get(rd.nextInt(populationList.size() - 1));
-                            cp = getNeighborFromIndividual(randIndividual, c);
-                        }while (cp == -1);
+                        List<Integer> randIndividual = populationList.get(rd.nextInt(populationList.size()));
+                        cp = randIndividual.get(getNextIndexFromIndividual(randIndividual, c));
                     }
-                    int neighborC = getNeighborFromIndividual(S, c);
-                    if ( neighborC == cp) {
+                    int nextC = getNextIndexFromIndividual(S, c);
+                    int nextCP = getNextIndexFromIndividual(S, cp);
+                    int indexCP = (nextCP - 1 + S.size()) % S.size();
+                    if (nextC == indexCP || ((nextC - 1 + S.size()) % S.size()) == nextCP) {
                         break;
                     }
                     // inverse the section from the next city of city c to the city c' in S'
-                    inverseSection(S, c, cp);
+                    if(indexCP > nextC) inverseSection(S, nextC, indexCP);
+                    else inverseSection(S, nextCP, nextC - 1);
+                    c = cp;
 
                     if (whileTime > 5000) {
                         System.out.println("overflow - " + i);
