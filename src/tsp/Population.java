@@ -1,5 +1,7 @@
 package tsp;
 
+import tspproblem.TSPProblem;
+
 import java.util.Random;
 
 public class Population {
@@ -30,14 +32,14 @@ public class Population {
 		pop=new Individual[npop];		
 	}
 	
-	public void evaluatePop(TSPLib tsp,int startIx, int endIx)
+	public void evaluatePop(TSPProblem tsp, int startIx, int endIx)
 	{
 		// evaluate each individual's cost
 		// find best individual
 				
 		for (int i=startIx;i<endIx;i++)
 		{
-			pop[i].calculateCost(tsp);			
+			pop[i].calculateCost(tsp);
 		}		
 	}
 	

@@ -1,12 +1,13 @@
 package tsp;
 
+import tspproblem.TSPProblem;
+
 import java.util.Random;
 
 public class Individual {
 	
 	public int[] permutation;
 	public double cost;
-	public static Random rand = new Random();
 	
 	public Individual(int[] givenind)
 	{
@@ -17,22 +18,19 @@ public class Individual {
 	{
 		Random rand = new Random();
 	    permutation = new int[ncities];
-	    for(int i=0;i<ncities;i++)
-	      permutation[i] = i;
-	    
-	    for(int i=ncities-1;i>=1;i--) {
-	      int m = rand.nextInt(i+1);
-	      if(m != i) {
-	        int tmp = permutation[i];
-	        permutation[i] = permutation[m];
-	        permutation[m] = tmp;
-	      }	      
-	    }	    
+		int swapIndex, swapTemp;
+		for (int i = 0; i < ncities; i++) {
+			permutation[i] = i;
+			swapIndex = rand.nextInt(i+1);
+			swapTemp = permutation[i];
+			permutation[i] = permutation[swapIndex];
+			permutation[swapIndex] = swapTemp;
+		}
 	}
 	
-	public void calculateCost(TSPLib tsp)
+	public void calculateCost(TSPProblem tsp)
 	{
-		cost=tsp.evaluateCandidate(permutation);
+		cost=tsp.cost(permutation);
 		
 	}
 	

@@ -91,7 +91,7 @@ public class TSPProblem {
             LocalSearch l1 = new LocalSearchExchange();
             LocalSearch l2 = new LocalSearchInversion();
             LocalSearch l3 = new LocalSearchJump();
-            IOOperatorForTSP o = new IOOperatorForTSP(t);
+            //IOOperatorForTSP o = new IOOperatorForTSP(t);
             double min1, min2, min3, min4 = min3 = min2 = min1 = Double.POSITIVE_INFINITY;
             double sum1, sum2, sum3, sum4 = sum3 = sum2 = sum1 = 0;
             int n = 30;
@@ -99,23 +99,23 @@ public class TSPProblem {
                 double c1 = t.cost(l1.search(t));
                 double c2 = t.cost(l2.search(t));
                 double c3 = t.cost(l3.search(t));
-                o.inverOverCalculate();
-                double c4 = o.getMinCost();
+                //o.inverOverCalculate();
+                //double c4 = o.getMinCost();
                 sum1 += c1;
                 sum2 += c2;
                 sum3 += c3;
-                sum4 += c4;
+                //sum4 += c4;
                 min1 = min1 > c1 ? c1 : min1;
                 min2 = min2 > c2 ? c2 : min2;
                 min3 = min3 > c3 ? c3 : min3;
-                min4 = min4 > c4 ? c4 : min4;
+                //min4 = min4 > c4 ? c4 : min4;
                 System.out.print(" "+j);
             }
             System.out.println();
             System.out.println(min1 + " - " + sum1 / n);
             System.out.println(min2 + " - " + sum2 / n);
             System.out.println(min3 + " - " + sum3 / n);
-            System.out.println(min4 + " - " + sum4 / n);
+            //System.out.println(min4 + " - " + sum4 / n);
         }
     }
 
