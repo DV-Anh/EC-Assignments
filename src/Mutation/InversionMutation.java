@@ -19,20 +19,18 @@ public class InversionMutation extends Mutation
 		while (i==j)
 			j=rand.nextInt(n);
 		
-		int md=(i+j)/2;
-		
 		if (i>j)
 		{
 			int tmp=i;
 			i=j;
 			j=tmp;
 		}
-		
-		for (int ii=0;ii<=md-i;ii++)
+		// Use 2 indexes moving opposite direction until touching/crossing each other
+		for (int ii=i,jj=j;ii<jj;ii++,jj--)
 		{
-			int tmp=p.permutation[i+ii];
-			p.permutation[i+ii]=p.permutation[j-ii];
-			p.permutation[j-ii]=tmp;
+			int tmp=p.permutation[ii];
+			p.permutation[ii]=p.permutation[jj];
+			p.permutation[jj]=tmp;
 		}
 		return p;
 	}
