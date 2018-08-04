@@ -1,7 +1,6 @@
 package Selection;
 
 import constants.Constants;
-import tsp.Individual;
 import tsp.Population;
 import tspproblem.TSPProblem;
 
