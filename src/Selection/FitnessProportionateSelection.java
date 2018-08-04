@@ -7,17 +7,20 @@ import tsp.TSPLib;
 import tspproblem.TSPProblem;
 
 public class FitnessProportionateSelection {
+
+
     TSPProblem t = new TSPProblem(Constants.TESTFIES[1]);
+
 
     public int[] selection(Population population, int selectionNum)
     {
 
-        double sum=sumOfFitness(population);
+        double[] matingPool_Fitness=fitness(population);
+        double sum=sumOfFitness(matingPool_Fitness);
 //        for (int i = 0; i <population.pop.length; i++)
 //        {
 //            sum=sum+matingPool_Fitness[i];
 //        }
-        double[] matingPool_Fitness=fitness(population);
         int[] indexOfInndividual =new int[selectionNum];
         int currentMembersNum=0;
         while (currentMembersNum<selectionNum)
@@ -44,15 +47,15 @@ public class FitnessProportionateSelection {
 
     /**
      * Using f(x)=x as fitness function
-     * @param population
+     * @param fitnessofIndividuals
      * @return
      */
-    public double sumOfFitness(Population population)
+    public double sumOfFitness(double[] fitnessofIndividuals)
     {
         double sum=0;
-        for (int i = 0; i <population.pop.length; i++)
+        for (int i = 0; i <fitnessofIndividuals.length; i++)
         {
-      //      sum=sum+population.pop[i].calculateCost(); Caclulating distance
+            sum=sum+fitnessofIndividuals[i]; //Caclulating distance
         }
 
         return sum;
@@ -74,7 +77,7 @@ public class FitnessProportionateSelection {
         double[] fitnessOfPopulation=new double[population.pop.length];
 
         for (int i = 0; i < population.pop.length; i++) {
-          fitnessOfPopulation[i]=population.pop[i].calculateCost(t);
+          fitnessOfPopulation[i]=1/population.pop[i].calculateCost(t);
         }
         return fitnessOfPopulation;
     }
