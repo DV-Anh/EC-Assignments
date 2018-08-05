@@ -8,7 +8,6 @@ import java.util.Random;
 
 public class TournamentSelection {
 
-    TSPProblem t = new TSPProblem(Constants.TESTFIES[1]);
 
     /**
      *
@@ -17,7 +16,7 @@ public class TournamentSelection {
      * @param tournamentSize
      * @return
      */
-    public int[] selection(Population population, int selectionNum, int tournamentSize )
+    public int[] selection(Population population, int selectionNum, int tournamentSize, TSPProblem tspProblem)
     {
         Random random=new Random();
         int[] selectedElements =new int[selectionNum];
@@ -36,7 +35,7 @@ public class TournamentSelection {
                 }
             }
 
-            selectedElements[currentMembersNum]=hightestFitness(indexOfIndividuals,population);
+            selectedElements[currentMembersNum]=hightestFitness(indexOfIndividuals,population,tspProblem);
             currentMembersNum++;
 
         }
@@ -49,9 +48,9 @@ public class TournamentSelection {
      * @param population
      * @return
      */
-    public int hightestFitness(int[] indexOfIndividuals,Population population)
+    public int hightestFitness(int[] indexOfIndividuals,Population population,TSPProblem tspProblem)
     {
-        double[] fintnessOfIndividuals=fitness(population);
+        double[] fintnessOfIndividuals=fitness(population,tspProblem);
 
         int aar_index = 0;
         if(indexOfIndividuals.length>0) {
@@ -67,13 +66,13 @@ public class TournamentSelection {
         return aar_index;
     }
 
-    public double[] fitness(Population population)
+    public double[] fitness(Population population,TSPProblem tspProblem)
     {
         //Caculating fitness of all cities; return a fitness array
         double[] fitnessOfPopulation=new double[population.pop.length];
 
         for (int i = 0; i < population.pop.length; i++) {
-            fitnessOfPopulation[i]=1/population.pop[i].calculateCost(t);
+            fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
         }
         return fitnessOfPopulation;
     }

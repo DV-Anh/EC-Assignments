@@ -9,13 +9,12 @@ import tspproblem.TSPProblem;
 public class FitnessProportionateSelection {
 
 
-    TSPProblem t = new TSPProblem(Constants.TESTFIES[1]);
 
 
-    public int[] selection(Population population, int selectionNum)
+    public int[] selection(Population population, int selectionNum,TSPProblem tspProblem)
     {
 
-        double[] matingPool_Fitness=fitness(population);
+        double[] matingPool_Fitness=fitness(population,tspProblem);
         double sum=sumOfFitness(matingPool_Fitness);
 //        for (int i = 0; i <population.pop.length; i++)
 //        {
@@ -71,13 +70,13 @@ public class FitnessProportionateSelection {
 //            System.out.println(sss);
 //        }
 //    }
-    public double[] fitness(Population population)
+    public double[] fitness(Population population,TSPProblem tspProblem)
     {
         //Caculating fitness of all cities; return a fitness array
         double[] fitnessOfPopulation=new double[population.pop.length];
 
         for (int i = 0; i < population.pop.length; i++) {
-          fitnessOfPopulation[i]=1/population.pop[i].calculateCost(t);
+          fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
         }
         return fitnessOfPopulation;
     }
