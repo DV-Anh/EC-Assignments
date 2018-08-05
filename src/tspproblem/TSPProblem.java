@@ -21,7 +21,7 @@ public class TSPProblem {
      */
     public TSPProblem(String filename){
         int size;
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(Constants.TESTPATH + filename)))){
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))){
             int coordIndex = -1;
             for(String line; (line = br.readLine()) != null;){
                 if(line.startsWith(Constants.EOF) || line.trim().length() < 1){
@@ -87,7 +87,7 @@ public class TSPProblem {
         // Using the class by passing file name into constructor
         for (int i = 0; i < Constants.TESTFIES.length; i++) {
             System.out.println(Constants.TESTFIES[i]);
-            TSPProblem t = new TSPProblem(Constants.TESTFIES[i]);
+            TSPProblem t = new TSPProblem(Constants.TESTPATH + Constants.TESTFIES[i]);
             LocalSearch l1 = new LocalSearchExchange();
             LocalSearch l2 = new LocalSearchInversion();
             LocalSearch l3 = new LocalSearchJump();
