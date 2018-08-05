@@ -24,7 +24,7 @@ import localsearch.*;
 // -xo			Order crossover
 // -xp			PMX crossover
 // -xc			Cycle crossover
-// -xe 			Edge Recombination crossover
+// -xe			Edge Recombination crossover
 // -sf			Fitness-proportional selection
 // -st			Tournament selection
 // -se			Elitism selection
