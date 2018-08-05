@@ -25,12 +25,11 @@ public class LocalSearchInversion extends LocalSearch {
         // Generate initial permutation
         int[] currentSolution = super.generateRandomPermutation(size);
         if(size <= 2) return currentSolution;
-        double currentCostChange;
+        boolean improving;
         // Iterate until no better neighbor available
         do{
             // Variable holding pair of jump indexes for best neighbor
-            int besti, bestj = besti = 0;
-            currentCostChange = 0;
+            improving = false;
             // Iterate through all neighbors and pick the best one
             neighborloop:
             for (int i = 0; i < size - 1; i++) {
@@ -43,13 +42,13 @@ public class LocalSearchInversion extends LocalSearch {
                             - problem.distance(currentSolution[j], currentSolution[jright])
                             + problem.distance(currentSolution[i], currentSolution[jright])
                             + problem.distance(currentSolution[j], currentSolution[ileft]);
-                    if(costChange < currentCostChange){
-                        currentCostChange = costChange;
-                        besti = i; bestj = j;//break neighborloop;
+                    if(costChange < -Constants.LOCALSEARCH_THRES){
+                        improving = true;
+                        generateNeighbor(currentSolution, i, j);
                     }
                 }
-            }generateNeighbor(currentSolution, besti, bestj);
-        }while(currentCostChange < -Constants.LOCALSEARCH_THRES);
+            }
+        }while(improving);
         return currentSolution;
     }
 }
