@@ -3,11 +3,12 @@ import tsp.Individual;
 
 public class OrderCrossOver extends CrossOver
 {
+
 	public OrderCrossOver()
 	{
 		super();
 	}
-	
+
 	public Individual apply(Individual p1, Individual p2)
 	{
 		int n=p1.permutation.length;
