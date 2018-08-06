@@ -7,21 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
-public class SwapMutation implements MutationOp {
+/**
+ * Created by LujunW on 2018/8/6.
+ */
+public class InversionMutation implements MutationOp {
     private Random rand;
     private double probability = 1;
 
-    public SwapMutation(double p) {
+    public InversionMutation(double p) {
         this.probability = p;
         this.rand = new Random();
     }
 
-    public SwapMutation(long seed) {
+    public InversionMutation(long seed) {
         this.rand = new Random(seed);
     }
 
-    public SwapMutation() {
+    public InversionMutation() {
     }
 
     @Override
@@ -37,9 +39,25 @@ public class SwapMutation implements MutationOp {
             while (i == j)
                 j = this.rand.nextInt(permLen);
 
-            mutated.add(one.swap(i, j));
+            mutated.add(inverse(one, i, j));
         }
 
         return mutated;
+    }
+
+    private Individual inverse(Individual one, int i, int j) {
+        int[] perm = one.clonePerm();
+
+        int l = i > j ? j : i;
+        int r = i > j ? i : j;
+        while (l < r) {
+            int t = perm[l];
+            perm[l] = perm[r];
+            perm[r] = t;
+            l++;
+            r--;
+        }
+
+        return new Individual(perm);
     }
 }

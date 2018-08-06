@@ -69,9 +69,9 @@ public class EvoSolverBuilder {
 
                 List<Individual> offsprings = this.crossOverOp.apply(parents);
 
-                offsprings = this.mutationOp.apply(offsprings);
+                List<Individual> mutated = this.mutationOp.apply(offsprings);
 
-                this.survivorSelectionOp.apply(population, parents, offsprings);
+                this.survivorSelectionOp.apply(population, parents, mutated);
 
                 currentGen++;
                 reporter.apply(currentGen, population);

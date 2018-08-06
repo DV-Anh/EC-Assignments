@@ -33,12 +33,18 @@ public class Population {
 
     public void removeWorst(int size) {
         popSet.sort(new IndividualComp());
-        popSet = popSet.subList(0, popSet.size() - size);
+        int desireSize = popSet.size() - size;
+        while (popSet.size() > desireSize)
+            popSet.remove(popSet.size()-1);
     }
 
     public double bestTourCost() {
         Individual best = Collections.min(popSet, new IndividualComp());
         return fitness(best);
+    }
+
+    public int size() {
+        return popSet.size();
     }
 
     private class IndividualComp implements Comparator<Individual> {
@@ -67,7 +73,11 @@ public class Population {
         popSet.sort(new IndividualComp());
         int realNum = selectedNum <= popSet.size() ? selectedNum : popSet.size();
 
-        return popSet.subList(0, realNum);
+        List<Individual> topList = new ArrayList<>();
+        for (int i = 0; i < realNum; i++)
+            topList.add(popSet.get(i));
+
+        return topList;
     }
 
 }

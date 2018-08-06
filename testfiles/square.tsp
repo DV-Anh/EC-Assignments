@@ -1,0 +1,11 @@
+NAME: square
+TYPE: TSP
+COMMENT: 4-city problem for unit test
+DIMENSION: 4
+EDGE_WEIGHT_TYPE : EUC_2D
+NODE_COORD_SECTION
+1 1 1
+2 1 2
+3 2 2
+4 2 1
+EOF
