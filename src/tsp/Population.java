@@ -2,6 +2,7 @@ package tsp;
 
 import tspproblem.TSPProblem;
 
+import java.util.List;
 import java.util.Random;
 
 public class Population {
@@ -54,6 +55,5 @@ public class Population {
 		return np;		
 		
 	}
-	
 
 }

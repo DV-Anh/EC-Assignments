@@ -1,4 +1,7 @@
 package evo;
 
-public class TSPSolver {
+import tspproblem.TSPProblem;
+
+public abstract class TSPSolver {
+    public abstract void solve(TSPProblem instance);
 }

@@ -2,6 +2,8 @@ package evo.core;
 
 import tspproblem.TSPProblem;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -11,18 +13,32 @@ public class Population {
 
     // Generate a population of popSize size from the TSPProblem instance
     public Population(int popSize, TSPProblem instance) {
-
+        this.popSet = new ArrayList<>();
+        for (int i = 0; i < popSize; i++)
+            popSet.add(new Individual(instance.size()));
         this.tspInstance = instance;
     }
 
+
     public Population(List<Individual> newPop, TSPProblem instance) {
         this.tspInstance = instance;
+        this.popSet = new ArrayList<>();
         this.popSet.addAll(newPop);
     }
 
 
     public void add(List<Individual> offsprings) {
         popSet.addAll(offsprings);
+    }
+
+    public void removeWorst(int size) {
+        popSet.sort(new IndividualComp());
+        popSet = popSet.subList(0, popSet.size() - size);
+    }
+
+    public double bestTourCost() {
+        Individual best = Collections.min(popSet, new IndividualComp());
+        return fitness(best);
     }
 
     private class IndividualComp implements Comparator<Individual> {

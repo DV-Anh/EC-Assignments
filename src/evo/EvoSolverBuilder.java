@@ -9,13 +9,13 @@ import java.util.List;
 public class EvoSolverBuilder {
     private EvoSolverBuilder() {};
 
-    public TSPSolver buildGeneric(
+    public static TSPSolver buildGeneric(
             int popSize,
             int genNum,
-            SelectionOp parentSelection,
+            ParentSelectionOp parentSelection,
             CrossOverOp crossOver,
             MutationOp mutation,
-            SelectionOp suvivorSelection,
+            SurvivorSelectionOp suvivorSelection,
             Reporter reporter
     ) {
         return new GenericTemplate(
@@ -30,9 +30,9 @@ public class EvoSolverBuilder {
     }
 
 
-    private class GenericTemplate extends TSPSolver {
-        private SelectionOp parentSelectionOp;
-        private SelectionOp suvivorSelectionOp;
+    private static class GenericTemplate extends TSPSolver {
+        private SurvivorSelectionOp survivorSelectionOp;
+        private ParentSelectionOp parentSelectionOp;
         private MutationOp mutationOp;
         private CrossOverOp crossOverOp;
         private Reporter reporter;
@@ -42,14 +42,14 @@ public class EvoSolverBuilder {
         public GenericTemplate(
                 int popSize,
                 int genNum,
-                SelectionOp parentSelection,
+                ParentSelectionOp parentSelection,
                 CrossOverOp crossOver,
                 MutationOp mutation,
-                SelectionOp suvivorSelection,
+                SurvivorSelectionOp survivorSelection,
                 Reporter reporter
         ) {
             this.parentSelectionOp = parentSelection;
-            this.suvivorSelectionOp = suvivorSelection;
+            this.survivorSelectionOp = survivorSelection;
             this.mutationOp = mutation;
             this.crossOverOp = crossOver;
             this.reporter = reporter;
@@ -57,6 +57,7 @@ public class EvoSolverBuilder {
             this.generationNum = genNum;
         }
 
+        @Override
         public void solve(TSPProblem instance) {
             Population population = new Population(this.populationSize, instance);
 
@@ -70,9 +71,7 @@ public class EvoSolverBuilder {
 
                 offsprings = this.mutationOp.apply(offsprings);
 
-                population.add(offsprings);
-                List<Individual> newPop = this.suvivorSelectionOp.apply(population);
-                population = new Population(newPop, instance);
+                this.survivorSelectionOp.apply(population, parents, offsprings);
 
                 currentGen++;
                 reporter.apply(currentGen, population);
