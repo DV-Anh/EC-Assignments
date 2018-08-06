@@ -1,14 +1,15 @@
-package Selection;
+package Selections;
 
 import tsp.Population;
 import tspproblem.TSPProblem;
 
 public class Selection {
+    double[] fitnessOfPopulation;
+
     public double[] fitness(Population population, TSPProblem tspProblem)
     {
         //Caculating fitness of all cities; return a fitness array
-        double[] fitnessOfPopulation=new double[population.pop.length];
-
+        fitnessOfPopulation=new double[population.pop.length];
         for (int i = 0; i < population.pop.length; i++) {
             fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
         }

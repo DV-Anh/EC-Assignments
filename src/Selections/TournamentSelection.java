@@ -1,4 +1,4 @@
-package Selection;
+package Selections;
 
 import tsp.Population;
 import tspproblem.TSPProblem;

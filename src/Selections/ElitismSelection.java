@@ -1,4 +1,4 @@
-package Selection;
+package Selections;
 
 import tsp.Population;
 import tspproblem.TSPProblem;
@@ -6,10 +6,9 @@ import tspproblem.TSPProblem;
 /**
  * Using f(x)=1/distance as fitness function
  */
-public class ElitismSelection extends Selection {
+public class ElitismSelection{
 
-
-    public int hightestFitness(int numOfElitism, Population population,TSPProblem tspProblem)
+    public int selection(Population population,TSPProblem tspProblem)
     {
         double[] fintnessOfIndividuals=fitness(population,tspProblem);
 
@@ -25,6 +24,16 @@ public class ElitismSelection extends Selection {
             }
         }
         return aar_index;
+    }
+    public double[] fitness(Population population, TSPProblem tspProblem)
+    {
+        //Caculating fitness of all cities; return a fitness array
+        double[] fitnessOfPopulation=new double[population.pop.length];
+
+        for (int i = 0; i < population.pop.length; i++) {
+            fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
+        }
+        return fitnessOfPopulation;
     }
 
 

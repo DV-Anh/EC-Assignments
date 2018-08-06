@@ -1,4 +1,4 @@
-package CrossOver;
+package Crossover;
 import tsp.Individual;
 
 public class EdgeCrossOver extends CrossOver
