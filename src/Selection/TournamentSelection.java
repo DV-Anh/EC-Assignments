@@ -1,12 +1,11 @@
 package Selection;
 
-import constants.Constants;
 import tsp.Population;
 import tspproblem.TSPProblem;
 
 import java.util.Random;
 
-public class TournamentSelection {
+public class TournamentSelection extends Selection{
 
 
     /**
@@ -65,33 +64,4 @@ public class TournamentSelection {
         }
         return aar_index;
     }
-
-    public double[] fitness(Population population,TSPProblem tspProblem)
-    {
-        //Caculating fitness of all cities; return a fitness array
-        double[] fitnessOfPopulation=new double[population.pop.length];
-
-        for (int i = 0; i < population.pop.length; i++) {
-            fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
-        }
-        return fitnessOfPopulation;
-    }
-
-    public static boolean whetherInArray(int[] arr, int targetValue) {
-        for(int s: arr){
-            if(s==targetValue)
-                return true;
-        }
-        return false;
-    }
-
-//    public static void main(String[] args)
-//    {
-//        TournamentSelection a=new TournamentSelection();
-//        double[] ss=a.selection(new double[] {5,18,91,23,66,56,45,76,235},3,2);
-//        for(double sss:ss)
-//        {
-//            System.out.println(sss);
-//        }
-//    }
 }

@@ -1,14 +1,10 @@
 package Selection;
 
 
-import constants.Constants;
 import tsp.Population;
-import tsp.TSPLib;
 import tspproblem.TSPProblem;
 
-public class FitnessProportionateSelection {
-
-
+public class FitnessProportionateSelection extends Selection{
 
 
     public int[] selection(Population population, int selectionNum,TSPProblem tspProblem)
@@ -16,10 +12,6 @@ public class FitnessProportionateSelection {
 
         double[] matingPool_Fitness=fitness(population,tspProblem);
         double sum=sumOfFitness(matingPool_Fitness);
-//        for (int i = 0; i <population.pop.length; i++)
-//        {
-//            sum=sum+matingPool_Fitness[i];
-//        }
         int[] indexOfInndividual =new int[selectionNum];
         int currentMembersNum=0;
         while (currentMembersNum<selectionNum)
@@ -45,7 +37,7 @@ public class FitnessProportionateSelection {
     }
 
     /**
-     * Using f(x)=x as fitness function
+     * Using f(x)=1/distance as fitness function
      * @param fitnessofIndividuals
      * @return
      */
@@ -59,34 +51,4 @@ public class FitnessProportionateSelection {
 
         return sum;
     }
-
-//    public static void main(String[] args)
-//    {
-//
-//        FitnessProportionateSelection a=new FitnessProportionateSelection();
-//        int [] ss=a.selection(new double[]{1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2,2.01,2.12,2.13,2.14,2.15,2.16},5);
-//        for(double sss:ss)
-//        {
-//            System.out.println(sss);
-//        }
-//    }
-    public double[] fitness(Population population,TSPProblem tspProblem)
-    {
-        //Caculating fitness of all cities; return a fitness array
-        double[] fitnessOfPopulation=new double[population.pop.length];
-
-        for (int i = 0; i < population.pop.length; i++) {
-          fitnessOfPopulation[i]=1/population.pop[i].calculateCost(tspProblem);
-        }
-        return fitnessOfPopulation;
-    }
-    public static boolean whetherInArray(int[] arr, int targetValue) {
-        for(int s: arr){
-            if(s==targetValue)
-                return true;
-        }
-        return false;
-    }
-
-
 }
