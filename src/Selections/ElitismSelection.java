@@ -1,5 +1,6 @@
 package Selections;
 
+
 import tsp.Population;
 import tspproblem.TSPProblem;
 
@@ -8,7 +9,7 @@ import tspproblem.TSPProblem;
  */
 public class ElitismSelection{
 
-    public int selection(Population population,TSPProblem tspProblem)
+    public int selection(Population population,TSPProblem tspProblem, int selectedNum)
     {
         double[] fintnessOfIndividuals=fitness(population,tspProblem);
 
@@ -35,6 +36,22 @@ public class ElitismSelection{
         }
         return fitnessOfPopulation;
     }
+
+    public int selection1(Represent.Population population, int num)
+    {
+        int aar_index = 0;
+        if(population.getPopulationSize()>0) {
+            double aar_Max = population.getIndividual(0).getFitness();
+            for (int i = 0; i < population.getPopulationSize(); i++) {
+                if (population.getIndividual(i).getFitness() > aar_Max) {//比较后赋值
+                    aar_Max = population.getIndividual(i).getFitness();
+                    aar_index = i;
+                }
+            }
+        }
+        return aar_index;
+    }
+
 
 
 }

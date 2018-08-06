@@ -4,11 +4,10 @@ import Crossover.OrderCrossOver;
 import Mutation.InversionMutation;
 import Selections.ElitismSelection;
 import Selections.FitnessProportionateSelection;
-import Selections.Selection;
+
 import constants.Constants;
 
-import tsp.Individual;
-import tsp.Population;
+
 import tspproblem.TSPProblem;
 
 import java.util.Random;
@@ -21,13 +20,14 @@ public class TestEA {
         double mutationProbability=0.25;
 
         Random random=new Random();
-        TSPProblem tspProblem=new TSPProblem(Constants.TESTFIES[1]);
-        Population population=new Population(populationSize,tspProblem.coordinates2D.length);
+        TSPProblem tspProblem=new TSPProblem(Constants.TESTPATH+Constants.TESTFIES[0]);
+        Population population=new Population();
         FitnessProportionateSelection pntSelection=new FitnessProportionateSelection();
         ElitismSelection selectionElitism=new ElitismSelection();
         double[] fitnessOfIndividuals=new double[tspProblem.coordinates2D.length];
-
-
+        Individual[] individuals=new Individual();
+        individuals=population.pop;
+        int intermediatepool=populationSize;
         fitnessOfIndividuals=pntSelection.fitness(population,tspProblem);
         int currentPopulationSize=0;
         OrderCrossOver orderCrossOver=new OrderCrossOver();
@@ -50,11 +50,13 @@ public class TestEA {
                 }
                 //Which function add offspring?
 
+                individuals[++intermediatepool]=individual;
 
             }
+            selectionElitism.selection(individuals,tspProblem,populationSize);
+            intermediatepool=populationSize;
             generateNum++;
         }
-
 
     }
     }
