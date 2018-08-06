@@ -36,6 +36,7 @@ class PopulationTest {
         indis.add(new Individual(new int[]{1, 3, 0, 2}));
         Population pop = new Population(indis, inst);
 
+        assertEquals(3, pop.size());
         pop.removeWorst(2);
         assertEquals(1, pop.size());
         assertEquals(4, pop.bestTourCost(), epsilon);

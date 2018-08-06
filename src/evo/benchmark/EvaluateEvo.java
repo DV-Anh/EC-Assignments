@@ -27,7 +27,7 @@ public class EvaluateEvo {
         ParentSelectionOp pSelOp = new GetTopSelection(2);
         CrossOverOp coOp = new OrderCrossOver(0.8);
         MutationOp muOp = new SwapMutation(0.2);
-        SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection(popSize);
+        SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection();
         Reporter reporter = new SimpleReporter();
 
         TSPSolver solver = EvoSolverBuilder.buildGeneric(
@@ -47,8 +47,8 @@ public class EvaluateEvo {
         TSPProblem inst = new TSPProblem(fn);
         ParentSelectionOp pSelOp = new GetTopSelection(2);
         CrossOverOp coOp = new OrderCrossOver(0.8);
-        MutationOp muOp = new InversionMutation(0.3);
-        SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection(popSize);
+        MutationOp muOp = new InversionMutation(0.2);
+        SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection();
         Reporter reporter = new SimpleReporter();
 
         TSPSolver solver = EvoSolverBuilder.buildGeneric(
@@ -64,8 +64,7 @@ public class EvaluateEvo {
     }
 
     public static void main(String[] args) {
-        evo1(200, 20000, "testfiles/eil51.tsp");
-        evo2(200, 20000, "testfiles/eil51.tsp");
+        evo2(50, 20000, "testfiles/eil51.tsp");
 //        evo1(200, 20000, "testfiles/eil101.tsp");
 //        evo1(200, 20000, "testfiles/kroC100.tsp");
 //        evo1(200, 20000, "testfiles/pcb442.tsp");

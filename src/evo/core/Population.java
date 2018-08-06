@@ -2,21 +2,20 @@ package evo.core;
 
 import tspproblem.TSPProblem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Population {
     private List<Individual> popSet;
     private TSPProblem tspInstance;
+    private Comparator<Individual> comparator = new IndividualComp();
 
     // Generate a population of popSize size from the TSPProblem instance
     public Population(int popSize, TSPProblem instance) {
+        this.tspInstance = instance;
         this.popSet = new ArrayList<>();
         for (int i = 0; i < popSize; i++)
             popSet.add(new Individual(instance.size()));
-        this.tspInstance = instance;
+        popSet.sort(comparator);
     }
 
 
@@ -24,23 +23,22 @@ public class Population {
         this.tspInstance = instance;
         this.popSet = new ArrayList<>();
         this.popSet.addAll(newPop);
+        popSet.sort(comparator);
     }
 
 
     public void add(List<Individual> offsprings) {
         popSet.addAll(offsprings);
+        popSet.sort(comparator);
     }
 
     public void removeWorst(int size) {
-        popSet.sort(new IndividualComp());
-        int desireSize = popSet.size() - size;
-        while (popSet.size() > desireSize)
+        for (int i = 0; i < size; i++)
             popSet.remove(popSet.size()-1);
     }
 
     public double bestTourCost() {
-        Individual best = Collections.min(popSet, new IndividualComp());
-        return fitness(best);
+        return fitness(popSet.get(0));
     }
 
     public int size() {
@@ -70,12 +68,16 @@ public class Population {
     }
 
     public List<Individual> getTop(int selectedNum) {
-        popSet.sort(new IndividualComp());
         int realNum = selectedNum <= popSet.size() ? selectedNum : popSet.size();
 
         List<Individual> topList = new ArrayList<>();
-        for (int i = 0; i < realNum; i++)
-            topList.add(popSet.get(i));
+        int i = 0;
+        for (Individual ind : popSet) {
+            if (i >= selectedNum)
+                break;
+            topList.add(ind);
+            i++;
+        }
 
         return topList;
     }
