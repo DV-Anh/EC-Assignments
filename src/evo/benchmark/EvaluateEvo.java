@@ -5,6 +5,8 @@ import evo.CrossOverOpImp.OrderCrossOver;
 import evo.MutationOpImp.InversionMutation;
 import evo.MutationOpImp.SwapMutation;
 import evo.ParentSelectionOpImp.GetTopSelection;
+import evo.ParentSelectionOpImp.RankBasedSelection;
+import evo.ParentSelectionOpImp.TournamentSelection;
 import evo.SuvivorSelectionOpImp.ElitismSuvivorSelection;
 import evo.core.Population;
 import tspproblem.TSPProblem;
@@ -24,7 +26,7 @@ public class EvaluateEvo {
     public static void evo1(int popSize, int genNum, String fn) {
         System.out.println(fn + ":" + popSize);
         TSPProblem inst = new TSPProblem(fn);
-        ParentSelectionOp pSelOp = new GetTopSelection(2);
+        ParentSelectionOp pSelOp = new RankBasedSelection(2);
         CrossOverOp coOp = new OrderCrossOver(0.8);
         MutationOp muOp = new SwapMutation(0.2);
         SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection();
@@ -45,8 +47,8 @@ public class EvaluateEvo {
     public static void evo2(int popSize, int genNum, String fn) {
         System.out.println(fn + ":" + popSize);
         TSPProblem inst = new TSPProblem(fn);
-        ParentSelectionOp pSelOp = new GetTopSelection(2);
-        CrossOverOp coOp = new OrderCrossOver(0.8);
+        ParentSelectionOp pSelOp = new TournamentSelection(2, 25);
+        CrossOverOp coOp = new OrderCrossOver(1.0);
         MutationOp muOp = new InversionMutation(0.2);
         SurvivorSelectionOp sSelOp = new ElitismSuvivorSelection();
         Reporter reporter = new SimpleReporter();
@@ -65,8 +67,7 @@ public class EvaluateEvo {
 
     public static void main(String[] args) {
         evo2(50, 20000, "testfiles/eil51.tsp");
-//        evo1(200, 20000, "testfiles/eil101.tsp");
-//        evo1(200, 20000, "testfiles/kroC100.tsp");
+        //evo1(200, 20000, "testfiles/eil51.tsp");
 //        evo1(200, 20000, "testfiles/pcb442.tsp");
 
     }

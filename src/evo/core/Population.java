@@ -45,6 +45,10 @@ public class Population {
         return popSet.size();
     }
 
+    public Individual get(int i) {
+        return popSet.get(i);
+    }
+
     private class IndividualComp implements Comparator<Individual> {
         private final static double epsilon = 0.0000001;
 
