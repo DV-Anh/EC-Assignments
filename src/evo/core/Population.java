@@ -5,40 +5,68 @@ import tspproblem.TSPProblem;
 import java.util.*;
 
 public class Population {
-    private List<Individual> popSet;
+    private List<Individual> popSet = new ArrayList<>();
+    private Map<Individual, Double> fitMatrix = new HashMap<>();
     private TSPProblem tspInstance;
     private Comparator<Individual> comparator = new IndividualComp();
 
     // Generate a population of popSize size from the TSPProblem instance
     public Population(int popSize, TSPProblem instance) {
         this.tspInstance = instance;
-        this.popSet = new ArrayList<>();
         for (int i = 0; i < popSize; i++)
-            popSet.add(new Individual(instance.size()));
-        popSet.sort(comparator);
+            this.add(new Individual(instance.size()));
     }
-
 
     public Population(List<Individual> newPop, TSPProblem instance) {
         this.tspInstance = instance;
-        this.popSet = new ArrayList<>();
-        this.popSet.addAll(newPop);
-        popSet.sort(comparator);
+        this.addAll(newPop);
     }
 
-
-    public void add(List<Individual> offsprings) {
-        popSet.addAll(offsprings);
-        popSet.sort(comparator);
+    public void add(Individual individual) {
+        this.popSet.add(individual);
+        this.fitMatrix.put(individual, this.fitness(individual));
     }
 
-    public void removeWorst(int size) {
-        for (int i = 0; i < size; i++)
-            popSet.remove(popSet.size()-1);
+    public void remove(Individual individual) {
+        this.popSet.remove(individual);
+        this.fitMatrix.remove(individual);
     }
 
-    public double bestTourCost() {
-        return fitness(popSet.get(0));
+    public double fitness(Individual i) {
+        if (this.fitMatrix.containsKey(i))
+            return this.fitMatrix.get(i);
+
+        return this.tspInstance.cost(i.clonePerm());
+    }
+
+    public void addAll(List<Individual> offsprings) {
+        for (Individual individual : offsprings)
+            this.add(individual);
+    }
+
+    public void removeWorst() {
+        Individual worst = this.get(0);
+        double worstFitness = this.fitMatrix.get(worst);
+        for (int i = 1; i < this.size(); i++) {
+            Individual indi = this.get(i);
+            double value = this.fitMatrix.get(indi);
+            if (value > worstFitness) {
+                worst = indi;
+                worstFitness = value;
+            }
+        }
+        this.remove(worst);
+    }
+
+    public double getBestFitnessValue() {
+        double bestFitness = this.fitMatrix.get(this.get(0));
+        for (int i = 1; i < this.size(); i++) {
+            Individual indi = this.get(i);
+            if (this.fitMatrix.get(indi) < bestFitness) {
+                bestFitness = this.fitMatrix.get(indi);
+            }
+        }
+        return bestFitness;
     }
 
     public int size() {
@@ -66,24 +94,4 @@ public class Population {
                 return 1;
         }
     }
-
-    private double fitness(Individual i) {
-        return this.tspInstance.cost(i.clonePerm());
-    }
-
-    public List<Individual> getTop(int selectedNum) {
-        int realNum = selectedNum <= popSet.size() ? selectedNum : popSet.size();
-
-        List<Individual> topList = new ArrayList<>();
-        int i = 0;
-        for (Individual ind : popSet) {
-            if (i >= selectedNum)
-                break;
-            topList.add(ind);
-            i++;
-        }
-
-        return topList;
-    }
-
 }

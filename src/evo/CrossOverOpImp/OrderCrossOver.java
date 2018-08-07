@@ -33,8 +33,8 @@ public class OrderCrossOver implements CrossOverOp {
             Individual p1 = parents.get(i);
             Individual p2 = parents.get(i+1);
             if (this.rand.nextDouble() > this.probability) {
-                offsprings.add(p1);
-                offsprings.add(p2);
+                offsprings.add(new Individual(p1.clonePerm()));
+                offsprings.add(new Individual(p2.clonePerm()));
                 continue;
             }
             int n = p1.length();

@@ -24,7 +24,7 @@ class PopulationTest {
         indis.add(new Individual(new int[]{1, 3, 0, 2}));
         Population pop = new Population(indis, inst);
 
-        assertEquals(4, pop.bestTourCost(), epsilon);
+        assertEquals(4, pop.getBestFitnessValue(), epsilon);
     }
 
     @Test
@@ -37,23 +37,8 @@ class PopulationTest {
         Population pop = new Population(indis, inst);
 
         assertEquals(3, pop.size());
-        pop.removeWorst(2);
-        assertEquals(1, pop.size());
-        assertEquals(4, pop.bestTourCost(), epsilon);
-    }
-
-    @Test
-    void getTop() {
-        TSPProblem inst = new TSPProblem("testfiles/square.tsp");
-        List<Individual> indis = new ArrayList<>();
-        indis.add(new Individual(new int[]{0, 1, 2, 3}));
-        indis.add(new Individual(new int[]{0, 2, 1, 3}));
-        indis.add(new Individual(new int[]{1, 3, 0, 2}));
-        Population pop = new Population(indis, inst);
-
-        List<Individual> best = pop.getTop(2);
-
-        assertEquals(4, inst.cost(best.get(0).clonePerm()), epsilon);
-        assertEquals(4.82842712475, inst.cost(best.get(1).clonePerm()), epsilon);
+        pop.removeWorst();
+        assertEquals(2, pop.size());
+        assertEquals(4, pop.getBestFitnessValue(), epsilon);
     }
 }

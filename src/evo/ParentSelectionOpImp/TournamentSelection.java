@@ -40,12 +40,19 @@ public class TournamentSelection implements ParentSelectionOp {
 
     private Individual select(Population p) {
         int pSize = p.size();
-        int min = this.rand.nextInt(pSize);
+
+        Individual parent = p.get(this.rand.nextInt(pSize));
+        double pValue = p.fitness(parent);
         for (int i = 1; i < k; i++) {
-            int cur = this.rand.nextInt(pSize);
-            if (cur < min)
-                min = cur;
+            Individual cand = p.get(this.rand.nextInt(pSize));
+            double candValue = p.fitness(cand);
+
+            if (candValue < pValue) {
+                parent = cand;
+                pValue = candValue;
+            }
         }
-        return p.get(min);
+
+        return parent;
     }
 }

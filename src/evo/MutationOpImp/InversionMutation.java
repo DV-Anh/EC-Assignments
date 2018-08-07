@@ -32,8 +32,10 @@ public class InversionMutation implements MutationOp {
         List<Individual> mutated = new ArrayList<>();
 
         for (Individual one : p) {
-            if (this.rand.nextDouble() > this.probability)
+            if (this.rand.nextDouble() > this.probability) {
+                mutated.add(new Individual(one.clonePerm()));
                 continue;
+            }
             int i = this.rand.nextInt(permLen);
             int j = this.rand.nextInt(permLen);
             while (i == j)

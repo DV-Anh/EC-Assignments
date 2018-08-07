@@ -11,7 +11,8 @@ public class ElitismSuvivorSelection implements SurvivorSelectionOp {
     @Override
     public void apply(
             Population origPop, List<Individual> parents, List<Individual> offsprings) {
-        origPop.removeWorst(offsprings.size());
-        origPop.add(offsprings);
+        origPop.removeWorst();
+        origPop.removeWorst();
+        origPop.addAll(offsprings);
     }
 }
