@@ -37,26 +37,33 @@ public class Individual {
     }
 
     private boolean crossoverFlag=false;
-    public Individual()
-    {
-        this.permutation=generateRandomPermutation(permutationSize);
-        fitness= TSPProblem.cost(permutation);
-        cost=1/fitness;
-    }
-    public Individual(int[] permutation)
+
+    public Individual(int[] permutation,int i)
     {
         this.permutation=permutation;
-        fitness=TSPProblem.cost(permutation);
-        cost=1/fitness;
+        this.cost= TSPProblem.cost(permutation);
+        this.fitness=1/cost;
+    }
+
+    public Individual()
+    {
+
+    }
+    public Individual setIndividual(int[] permutation)
+    {
+        permutation=permutation;
+        cost=TSPProblem.cost(permutation);
+        fitness=1/cost;
+        return this;
     }
     public int[] getPermutation() {
         return permutation;
     }
 
     public void setPermutation(int[] permutation) {
-        this.permutation = permutation;
-        fitness= TSPProblem.cost(permutation);
-        cost=1/fitness;
+        permutation = permutation;
+        cost= TSPProblem.cost(permutation);
+        fitness=1/cost;
     }
 
     public double getFitness() {
@@ -69,17 +76,5 @@ public class Individual {
     }
 
 
-    public int[] generateRandomPermutation(int length) {
-        Random rng = new Random();
-        int swapIndex, swapTemp;
-        int[] permutation = new int[length];
-        for (int i = 0; i < length; i++) {
-            permutation[i] = i;
-            swapIndex = rng.nextInt(i+1);
-            swapTemp = permutation[i];
-            permutation[i] = permutation[swapIndex];
-            permutation[swapIndex] = swapTemp;
-        }
-        return permutation;
-    }
+
 }

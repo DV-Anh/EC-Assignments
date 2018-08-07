@@ -5,11 +5,19 @@ import java.util.List;
 
 public class Population {
     private List<Individual> individualList=new ArrayList<>();
+
+    public Population(Individual[] individuals, int i) {
+        for (Individual individual:individuals)
+        {
+            individualList.add(individual);
+        }
+    }
+
     public void addIndividual(Individual individual)
     {
         individualList.add(individual);
     }
-    public void addPopulation(Individual[] individuals)
+    public void addPopulation(Individual[] individuals,int k)
     {
         for (Individual i:individuals)
         {
