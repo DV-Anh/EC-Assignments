@@ -4,11 +4,12 @@ import tspproblem.TSPProblem;
 
 import java.util.Random;
 
-public class Individual {
+public class Individual implements Comparable<Individual> {
     private int[] permutation;
+    private TSPProblem problem;
     private double fitness;
     private double cost;
-    private int permutationSize=TSPProblem.coordinates2D.length;
+    private int permutationSize;
     private boolean mutationFlag=false;
     private boolean selected=false;
 
@@ -38,23 +39,25 @@ public class Individual {
 
     private boolean crossoverFlag=false;
 
-    public Individual(int[] permutation,int i)
+    public Individual(int[] permutation,TSPProblem tsp)
+    {
+        permutationSize=tsp.size();
+        problem=tsp;
+        this.permutation=permutation;
+        this.cost= tsp.cost(permutation);
+        this.fitness=1/cost;
+
+    }
+
+    public Individual(TSPProblem tsp)
+    {
+problem=tsp;
+    }
+    public void setIndividual(int[] permutation)
     {
         this.permutation=permutation;
-        this.cost= TSPProblem.cost(permutation);
-        this.fitness=1/cost;
-    }
-
-    public Individual()
-    {
-
-    }
-    public Individual setIndividual(int[] permutation)
-    {
-        permutation=permutation;
-        cost=TSPProblem.cost(permutation);
+        cost=problem.cost(permutation);
         fitness=1/cost;
-        return this;
     }
     public int[] getPermutation() {
         return permutation;
@@ -62,7 +65,7 @@ public class Individual {
 
     public void setPermutation(int[] permutation) {
         permutation = permutation;
-        cost= TSPProblem.cost(permutation);
+        cost= problem.cost(permutation);
         fitness=1/cost;
     }
 
@@ -76,5 +79,8 @@ public class Individual {
     }
 
 
-
+    @Override
+    public int compareTo(Individual o) {
+        return Double.compare(this.fitness,o.fitness);
+    }
 }

@@ -37,21 +37,14 @@ public class ElitismSelection{
         return fitnessOfPopulation;
     }
 
-    public int selection1(Represent.Population population, int num)
+    public void selection1(Represent.Population population,int num)
     {
-        int aar_index = 0;
-        if(population.getPopulationSize()>0) {
-            double aar_Max = population.getIndividual(0).getFitness();
-            for (int i = 0; i < population.getPopulationSize(); i++) {
-                if (population.getIndividual(i).getFitness() > aar_Max) {//比较后赋值
-                    aar_Max = population.getIndividual(i).getFitness();
-                    aar_index = i;
-                }
-            }
-        }
-        return aar_index;
-    }
+        population.sort();
+        for (int i = 0; i < num; i++) {
+            population.remove(0);
 
+        }
+    }
 
 
 }

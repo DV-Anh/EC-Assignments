@@ -13,8 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class TSPProblem {
-    public static final double[][] coordinates2D = new double[2][];
-    private static double[][] distanceMatrix;
+    public final double[][] coordinates2D = new double[2][];
+    private double[][] distanceMatrix;
     /**
      * Constructor reads file name, read and store TSP from the file to array of coordinates
      * @param filename name of problem file
@@ -68,7 +68,7 @@ public class TSPProblem {
      * @param j index j
      * @return distance from node i to node j
      */
-    public static double distance(int i, int j){
+    public double distance(int i, int j){
         return j > i ? distanceMatrix[j][i] : distanceMatrix[i][j];
     }
     /**
@@ -76,7 +76,7 @@ public class TSPProblem {
      * @param candidate the candidate
      * @return the cost
      */
-    public static double cost(int[] candidate){
+    public double cost(int[] candidate){
         double cost = 0;
         for (int i = 0; i < candidate.length - 1; i++) {
             cost += distance(candidate[i], candidate[i + 1]);

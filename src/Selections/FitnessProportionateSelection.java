@@ -46,7 +46,7 @@ public class FitnessProportionateSelection extends Selection{
             int indexOfArrays=0;
             double random=Math.random();
             double cumulativeProbability=0;
-            while( cumulativeProbability+(population.getIndividual(indexOfArrays).getFitness()/sum) < random)//需要修改为累计概率
+            while( cumulativeProbability+(population.getIndividual(indexOfArrays).getFitness()/sum) < random)
             {
                 indexOfArrays++;
                 if(indexOfArrays+1>=population.getPopulationSize())
@@ -89,4 +89,5 @@ public class FitnessProportionateSelection extends Selection{
 
         return sum;
     }
+
 }

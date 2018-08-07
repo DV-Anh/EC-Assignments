@@ -7,6 +7,7 @@ import Represent.Population;
 import Selections.ElitismSelection;
 import Selections.FitnessProportionateSelection;
 
+import Selections.TournamentSelection;
 import constants.Constants;
 
 
@@ -46,7 +47,7 @@ public class TestEA {
         {
             TestEA testEA=new TestEA();
            // System.out.println(IntArrayToString(testEA.generateRandomPermutation(tspProblem.size())));
-            individuals[currentPopulationSize]=new Individual(testEA.generateRandomPermutation(tspProblem.size()),1);
+            individuals[currentPopulationSize]=new Individual(testEA.generateRandomPermutation(tspProblem.size()),tspProblem);
      //       System.out.println(IntArrayToString(individuals[currentPopulationSize].getPermutation()));
             currentPopulationSize++;
         }
@@ -55,31 +56,37 @@ public class TestEA {
         InversionMutation inversionMutation=new InversionMutation();
         LocalSearch localSearch=new LocalSearchJump(tspProblem);
         while (generateNum<30) {
-            while (population.getPopulationSize() <= populationSize) {
+            while (individuals.length <= populationSize) {
+                System.out.println(population.getPopulationSize());
                 // selectedIndiv[]----- Return index of selected individuals
-                Represent.Individual individual=new Individual();
+                Represent.Individual individual=new Individual(tspProblem);
                 int selectedIndiv[] = (pntSelection).selection1(population, 2);
                 //Crossover probability:0.25
 
                 if (random.nextDouble() <= crossoverProbability) {
                     // Apply CrossOver
-                    System.out.println(IntArrayToString(individuals[selectedIndiv[0]].getPermutation())+'\n'+IntArrayToString(individuals[selectedIndiv[1]].getPermutation()));
-                   individual= individual.setIndividual(orderCrossOver.apply1(population.getIndividual(selectedIndiv[0]),population.getIndividual(selectedIndiv[1])));
+                //    System.out.println("1"+IntArrayToString(individuals[selectedIndiv[0]].getPermutation())+'\n'+IntArrayToString(individuals[selectedIndiv[1]].getPermutation()));
+                    individual.setIndividual(orderCrossOver.apply1(population.getIndividual(selectedIndiv[0]),population.getIndividual(selectedIndiv[1])));
+              //  System.out.println(IntArrayToString(individual.getPermutation()));
+                }else{
+                    individual.setIndividual(population.getIndividual(selectedIndiv[0]).getPermutation());
                 }
                 //Mutating probability:0.25
-                if (random.nextDouble() <= mutationProbability) {
+//                if (random.nextDouble() <= mutationProbability) {
                     //Apply mutation
-//                    individual=individual.setIndividual(inversionMutation.apply1(individual));
-                }
+//                    individual.setIndividual(inversionMutation.(individual));
+//                }
                 population.addIndividual(individual);
-                System.out.println(population.getPopulationSize());
-
+                selectionElitism.selection1(population,1);
             }
+
          //   selectionElitism.selection(individuals,tspProblem,populationSize);
          //   intermediatepool=populationSize;
+
             generateNum++;
         }
-
+        double d = tspProblem.cost(population.getBestOne().getPermutation());
+        System.out.println("Cost: "+d+ IntArrayToString(population.getBestOne().getPermutation())+" "+population.getBestOne().getCost());
     }
     public static String IntArrayToString(int[] intArray)
     {

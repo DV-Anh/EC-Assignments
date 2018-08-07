@@ -1,6 +1,8 @@
 package Represent;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Population {
@@ -12,6 +14,7 @@ public class Population {
             individualList.add(individual);
         }
     }
+
 
     public void addIndividual(Individual individual)
     {
@@ -34,4 +37,16 @@ public class Population {
     {
         return individualList.size();
     }
+    public void sort(){
+        Arrays.sort(this.individualList.toArray());
+    }
+    public void remove(int i){
+        individualList.remove(i);
+
+    }
+    public Individual getBestOne(){
+        sort();
+        return individualList.get(individualList.size()-1);
+    }
+
 }
