@@ -110,9 +110,9 @@ public class EvaluateEvo {
     }
 
     public static void main(String[] args) {
-        // quickTest();
+        quickTest();
         // slowTest();
-        benchmarkTOI();
+        // benchmarkTOI();
     }
 
     private static void slowTest() {

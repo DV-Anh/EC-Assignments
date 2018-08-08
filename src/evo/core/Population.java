@@ -58,6 +58,21 @@ public class Population {
         this.remove(worst);
     }
 
+    public double getWorstFitnessValue() {
+        Individual worst = this.get(0);
+        double worstFitness = this.fitMatrix.get(worst);
+        for (int i = 1; i < this.size(); i++) {
+            Individual indi = this.get(i);
+            double value = this.fitMatrix.get(indi);
+            if (value > worstFitness) {
+                worst = indi;
+                worstFitness = value;
+            }
+        }
+
+        return this.fitness(worst);
+    }
+
     public double getBestFitnessValue() {
         double bestFitness = this.fitMatrix.get(this.get(0));
         for (int i = 1; i < this.size(); i++) {

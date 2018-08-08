@@ -27,11 +27,11 @@ public class RouletteWheelSelection implements ParentSelectionOp {
 
     @Override
     public List<Individual> apply(Population p) {
-
         double[] fitness = new double[p.size()];
+        double worstScore = p.getWorstFitnessValue();
         double fitSum = 0.0;
         for (int i = 0; i < p.size(); i++) {
-            fitness[i] = p.fitness(p.get(i));
+            fitness[i] = worstScore - p.fitness(p.get(i));
             fitSum += fitness[i];
         }
 
