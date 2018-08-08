@@ -26,8 +26,8 @@ public class EvaluateEvo {
         @Override
         public void apply(int gen, Population p) {
             switch (gen) {
-                case 0: case 2000:
-                case 5000: case 10000:
+//                case 0: case 2000:
+//                case 5000: case 10000:
                 case 20000:
                     report(gen, p.getBestFitnessValue());
                     break;
@@ -111,7 +111,8 @@ public class EvaluateEvo {
 
     public static void main(String[] args) {
         // quickTest();
-        slowTest();
+        // slowTest();
+        benchmarkTOI();
     }
 
     private static void slowTest() {
@@ -136,6 +137,28 @@ public class EvaluateEvo {
         testEvo("testfiles/pcb442.tsp");
     }
 
+    public static void benchmarkTOI() {
+        System.out.println(
+                "AlgoName,FileName,PopSize,Gen,Cost"
+        );
+        String[] files = new String[]{
+                "testfiles/eil51.tsp",
+                "testfiles/eil76.tsp",
+                "testfiles/eil101.tsp",
+                "testfiles/st70.tsp",
+                "testfiles/kroA100.tsp",
+                "testfiles/kroC100.tsp",
+                "testfiles/kroD100.tsp",
+                "testfiles/lin105.tsp",
+                "testfiles/pcb442.tsp",
+                "testfiles/pr2392.tsp"
+        };
+        for (String fn : files) {
+            for (int i = 0; i < 30; i++) {
+                TOI(50, 20000, fn);
+            }
+        }
+    }
     public static void testEvo(String fn) {
         int[] popSizes = new int[]{20, 50, 100, 200};
         int gen = 20000;
