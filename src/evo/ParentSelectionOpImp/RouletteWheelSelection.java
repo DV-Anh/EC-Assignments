@@ -1,6 +1,6 @@
 package evo.ParentSelectionOpImp;
 
-import evo.ParentSelectionOp;
+import evo.core.ParentSelectionOp;
 import evo.core.Individual;
 import evo.core.Population;
 

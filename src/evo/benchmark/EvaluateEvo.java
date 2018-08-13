@@ -7,7 +7,7 @@ import evo.MutationOpImp.SwapMutation;
 import evo.ParentSelectionOpImp.RouletteWheelSelection;
 import evo.ParentSelectionOpImp.TournamentSelection;
 import evo.SuvivorSelectionOpImp.ElitismSuvivorSelection;
-import evo.core.Population;
+import evo.core.*;
 import tspproblem.TSPProblem;
 
 public class EvaluateEvo {

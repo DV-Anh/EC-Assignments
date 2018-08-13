@@ -1,4 +1,4 @@
-package evo;
+package evo.core;
 
 
 import evo.core.Population;

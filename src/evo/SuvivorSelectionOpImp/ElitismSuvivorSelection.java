@@ -1,7 +1,7 @@
 package evo.SuvivorSelectionOpImp;
 
 
-import evo.SurvivorSelectionOp;
+import evo.core.SurvivorSelectionOp;
 import evo.core.Individual;
 import evo.core.Population;
 

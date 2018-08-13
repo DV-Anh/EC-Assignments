@@ -1,6 +1,6 @@
 package evo.MutationOpImp;
 
-import evo.MutationOp;
+import evo.core.MutationOp;
 import evo.core.Individual;
 
 import java.util.ArrayList;

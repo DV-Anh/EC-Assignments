@@ -1,6 +1,6 @@
 package evo.CrossOverOpImp;
 
-import evo.CrossOverOp;
+import evo.core.CrossOverOp;
 import evo.core.Individual;
 
 import java.util.ArrayList;

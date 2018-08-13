@@ -1,14 +1,12 @@
 package evo.tests;
 
-import evo.MutationOp;
+import evo.core.MutationOp;
 import evo.MutationOpImp.SwapMutation;
 import evo.core.Individual;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by LujunW on 2018/8/6.

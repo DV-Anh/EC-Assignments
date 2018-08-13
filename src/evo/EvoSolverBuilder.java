@@ -1,7 +1,6 @@
 package evo;
 
-import evo.core.Individual;
-import evo.core.Population;
+import evo.core.*;
 import tspproblem.TSPProblem;
 
 import java.util.List;

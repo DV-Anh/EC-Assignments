@@ -1,6 +1,6 @@
 package evo.tests;
 
-import evo.CrossOverOp;
+import evo.core.CrossOverOp;
 import evo.CrossOverOpImp.OrderCrossOver;
 import evo.core.Individual;
 import org.junit.jupiter.api.Test;
