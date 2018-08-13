@@ -12,16 +12,12 @@ public class OrderCrossOver implements CrossOverOp {
     private double probability = 1;
 
     public OrderCrossOver(long seed) {
-        rand = new Random(seed);
+        this.rand = new Random(seed);
     }
 
     public OrderCrossOver(double probability) {
         this.rand = new Random();
         this.probability = probability;
-    }
-
-    public OrderCrossOver() {
-        rand = new Random();
     }
 
     @Override

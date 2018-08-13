@@ -21,9 +21,6 @@ public class SwapMutation implements MutationOp {
         this.rand = new Random(seed);
     }
 
-    public SwapMutation() {
-    }
-
     @Override
     public List<Individual> apply(List<Individual> p) {
         int permLen = p.get(0).length();
