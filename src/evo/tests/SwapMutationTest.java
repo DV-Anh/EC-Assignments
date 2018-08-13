@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by LujunW on 2018/8/6.
- */
 class SwapMutationTest {
     @Test
     void apply() {

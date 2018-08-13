@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by LujunW on 2018/8/6.
- */
 class IndividualTest {
     @Test
     void swap() {

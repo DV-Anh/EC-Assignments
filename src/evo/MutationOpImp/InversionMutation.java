@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by LujunW on 2018/8/6.
- */
 public class InversionMutation implements MutationOp {
     private Random rand;
     private double probability = 1;

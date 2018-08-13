@@ -10,9 +10,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by LujunW on 2018/8/6.
- */
 class PopulationTest {
     private final static double epsilon = 0.000001;
     @Test

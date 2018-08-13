@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by LujunW on 2018/8/7.
- */
 public class RankBasedSelection implements ParentSelectionOp {
 
     private final Random rand;
