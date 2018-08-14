@@ -27,7 +27,7 @@ public class ElitistSearch extends TSPSolver {
 			children=mutation.mutate(children);
 			population.add(children, problem);
 			population.kill_worst(2);
-			if (displayevery!=0 && (i+1)%displayevery==0) System.out.println(i+" "+population.bestscore());
+			if (displayevery!=0 && (i+1)%displayevery==0) System.out.println((i+1)+" "+population.bestscore());
 		}
 		return population.bestscore();
 	}

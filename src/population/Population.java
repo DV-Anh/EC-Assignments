@@ -6,12 +6,11 @@ import tspproblem.*;
 import individual.*;
 
 public class Population {
-	public List<Individual> list;
+	public List<Individual> list=new ArrayList<Individual>();
 
 	public Population(){}
 
 	public Population (int popsize, TSPProblem problem) {
-		list=new ArrayList<Individual>();
 		for (int i = 0; i<popsize; i++) {
 			Individual individual = new Individual(problem.size);
 			individual.randomise();
