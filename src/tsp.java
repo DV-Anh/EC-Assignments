@@ -1,9 +1,9 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.io.*; 
 import tspproblem.*;
-import localsearch.*;
+import tspsolver.*;
+import mutation.*;
+import population.*;
+import selection.*;
+import crossover.*;
 
 // Compile:
 // javac tsp.java
@@ -12,32 +12,28 @@ import localsearch.*;
 // java tsp [OPTIONS] mapfilename
 
 // Options:
-// -r(int)		repeat the method (int) number of times, eg: -r30
-// -p(int)		create a population of (int) number of individuals, eg: -p100
-// -g(int)		run the method for (int) number of generations, eg: -g10000
-// -lj			local search implemented with jump
-// -le			local search implemented with exchange
-// -l2			local search implemented with 2-opt neighbourhood
-// -mn			Insert mutation
-// -ms			Swap mutation
-// -mv			Inversion mutation
-// -xo			Order crossover
-// -xp			PMX crossover
-// -xc			Cycle crossover
-// -xe			Edge Recombination crossover
-// -sf			Fitness-proportional selection
-// -st			Tournament selection
-// -se			Elitism selection
+// -r(int)		Repeat the method (int) number of times, eg: -r30
+// -l2			Local search implemented with inversion (2-opt)
+// -l3			Local search implemented with jump (3-opt)
+// -l4			Local search implemented with exchange (4-opt)
+// -p(int)		Population search with (int) number of individuals, eg: -p100
+// -g(int)		Run population method for (int) number of generations, eg: -g10000
+// -d(int)		Display the best population result every (int) generation, eg: -d1000
+// -mn(int)		Insert mutation (int)% of the time
+// -ms(int)		Swap mutation (int)% of the time
+// -mv(int)		Inversion mutation (int)% of the time
+// -sf			Fitness proportionate selection
+// -st(int)		Tournament selection from (int)% of the population, eg: -st10
+// -xc(int)		Cycle crossover (int)% of the time
+// -xe(int)		Edge Recombination crossover (int)% of the time
+// -xo(int)		Order crossover (int)% of the time
+// -xp(int)		PMX crossover (int)% of the time
 
 public class tsp {
-	// Parameters for defining the algorithm to use
-	static char algorithm_type='.';
+	static final String INVALID="Invalid option ";
 	static int repetitions=1;
-	static int population_size=1;
-	static int generations=1;
-	static char mutation_type;
-	static char crossover_type;
-	static char selection_type;
+	static TSPSolver solver;
+	static ElitistSearch elitesearch = new ElitistSearch();
 
 	public static void error(String message)
 	// Method written by: Clint Gamlin (a1038415)
@@ -49,32 +45,16 @@ public class tsp {
 	{
 		TSPProblem problem = new TSPProblem(args[args.length-1]);
 		set_algorithm(args);
-		
+
 		double cost=0;
 		double sum1=0;
 		double sum2=0;
 		double max=0;
 		double min=Double.POSITIVE_INFINITY;
-		LocalSearch search;
 		for (int i=0; i<repetitions; i++) {
-			switch(algorithm_type) {
-				case 'j': // jump
-					search = new LocalSearchJump();
-					cost = problem.cost(search.search(problem));
-					break;
-				case 'e': // exchange
-					search = new LocalSearchExchange();
-					cost = problem.cost(search.search(problem));
-					break;
-				case '2': // 2-opt neighbourhood
-					search = new LocalSearchInversion();
-					cost = problem.cost(search.search(problem));
-					break;
-				case 'p': // population based
-				case 'i': // InverOver
-				break;
-			default: error("No valid algorithm type selected");
-			}
+			cost=solver.search(problem);
+			// try {cost=solver.search(problem);}
+			// catch(NullPointerException ex) {error("No valid algorithm selected");}
 			if (cost<min) min=cost;
 			if (cost>max) max=cost;
 			sum1+=cost;
@@ -101,52 +81,54 @@ public class tsp {
 		// which is not read here.
 		for (int i=0; i<args.length-1; i++) {
 			// ensure argument starts with a dash
-			if (args[i].charAt(0)!='-') error("Invalid option "+args[i]);
+			if (args[i].charAt(0)!='-') error(INVALID+args[i]);
 
 			// use switch-cases to parse argument
 			switch(args[i].charAt(1)){
-			case 'f': algorithm_type='f'; break;
-			case 'd': algorithm_type='d'; break;
+			case 'r': repetitions=get_option_value(2,args[i]); break;
+			case 'g': elitesearch.generations=get_option_value(2,args[i]); break;
+			case 'd': elitesearch.displayevery=get_option_value(2,args[i]); break;
+
 			case 'l':
 				switch(args[i].charAt(2)){
-				case 'j': algorithm_type='j'; break;
-				case 'e': algorithm_type='e'; break;
-				case '2': algorithm_type='2'; break;
-				default: error("Invalid option "+args[i]);
+				case '2': solver = new LocalSearchInversion(); break;
+				case '3': solver = new LocalSearchJump(); break;
+				case '4': solver = new LocalSearchExchange(); break;
+				default: error(INVALID+args[i]);
 				}
+				break;
+			case 'p':
+				solver = elitesearch;
+				elitesearch.population_size=get_option_value(2,args[i]);
 				break;
 			case 'm':
-				algorithm_type='p';
+				solver = elitesearch;
 				switch(args[i].charAt(2)){
-				case 'n': mutation_type='n'; break;
-				case 's': mutation_type='s'; break;
-				case 'v': mutation_type='v'; break;
-				default: error("Invalid option "+args[i]);
-				}
-				break;
-			case 'x':
-				algorithm_type='p';
-				switch(args[i].charAt(2)){
-				case 'o': crossover_type='o'; break;
-				case 'p': crossover_type='p'; break;
-				case 'c': crossover_type='c'; break;
-				case 'e': crossover_type='e'; break;				
-				default: error("Invalid option "+args[i]);
+				case 'n': elitesearch.mutation=new InsertMutation(get_option_value(3,args[i])); break;
+				case 's': elitesearch.mutation=new SwapMutation(get_option_value(3,args[i])); break;
+				case 'v': elitesearch.mutation=new InversionMutation(get_option_value(3,args[i])); break;
+				default: error(INVALID+args[i]);
 				}
 				break;
 			case 's':
-				algorithm_type='p';
+				solver = elitesearch;
 				switch(args[i].charAt(2)){
-				case 'f': selection_type='f'; break;
-				case 't': selection_type='t'; break;
-				case 'e': selection_type='e'; break;
-				default: error("Invalid option "+args[i]);
+				case 'f': elitesearch.selection=new FitnessProportionateSelection();break;
+				case 't': elitesearch.selection=new TournamentSelection(get_option_value(3,args[i]));break;
+				default: error(INVALID+args[i]);
 				}
 				break;
-			case 'r': repetitions=get_option_value(2,args[i]); break;
-			case 'p': population_size=get_option_value(2,args[i]); break;
-			case 'g': generations=get_option_value(2,args[i]); break;						
-			default: error("Invalid option "+args[i]);
+			case 'x':
+				solver = elitesearch;
+				switch(args[i].charAt(2)){
+				case 'c': elitesearch.crossover=new CycleCrossOver(get_option_value(3,args[i]));break;
+				case 'e': elitesearch.crossover=new EdgeCrossOver(get_option_value(3,args[i]));break;
+				case 'o': elitesearch.crossover=new OrderCrossOver(get_option_value(3,args[i]));break;
+				case 'p': elitesearch.crossover=new PMXCrossOver(get_option_value(3,args[i]));break;
+				default: error(INVALID+args[i]);
+				}
+				break;					
+			default: error(INVALID+args[i]);
 			}
 		}
 	}
@@ -154,8 +136,14 @@ public class tsp {
 	public static int get_option_value(int position, String arg)
 	// Method written by: Clint Gamlin (a1038415)
 	// Returns integer value part of a command line argument
-	// TODO: catch and return errors
 	{
-		return Integer.parseInt(arg.substring(position, arg.length()));
+		int value=0;
+		try {
+			value=Integer.parseInt(arg.substring(position, arg.length()));
+		}
+		catch (NumberFormatException ex) {
+			error(INVALID+arg);
+		}
+		return value;
 	}
 }
