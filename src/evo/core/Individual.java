@@ -13,6 +13,10 @@ public class Individual {
         this.permutation = newperm.clone();
     }
 
+    public Individual(Individual another) {
+        this.permutation = another.permutation.clone();
+    }
+
     public Individual(int dim) {
         List<Integer> dummy = new ArrayList<>();
         for (int i = 0; i < dim; i++)
