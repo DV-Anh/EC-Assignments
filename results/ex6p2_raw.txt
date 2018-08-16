@@ -1,0 +1,99 @@
+# Test three evolutionary algorithms and benchmark the best
+# ROI: RouletteWheel,	OrderCrossOver(p=1.0),	Inversion Mutation(p=1.0)
+# TOI: Tournament(k=popSize/3),	OrderCrossOver(p=1.0),	Inversion Mutation(p=1.0)
+# TOS: Tournament(k=popSize/3),	OrderCrossOver(p=1.0),	Swap Mutation(p=1.0
+# Notes: Results for PR2392 and USA13509 will come at the end because of long time of running.
+# Notes: Results are in CSV format
+
+
+# The following running might take a long time
+# Benchmark the best algorithm of the three
+AlgoName,FileName,PopSize,Gen,Cost
+TOI,testfiles/pr2392.tsp,50,20000,6414962.829242344
+TOI,testfiles/pr2392.tsp,50,20000,6539256.840891284
+TOI,testfiles/pr2392.tsp,50,20000,6338689.580329442
+TOI,testfiles/pr2392.tsp,50,20000,6441092.672231177
+TOI,testfiles/pr2392.tsp,50,20000,6411754.269227472
+TOI,testfiles/pr2392.tsp,50,20000,6396773.752796277
+TOI,testfiles/pr2392.tsp,50,20000,6471920.289117105
+TOI,testfiles/pr2392.tsp,50,20000,6394716.503876638
+TOI,testfiles/pr2392.tsp,50,20000,6376949.7197896335
+TOI,testfiles/pr2392.tsp,50,20000,6507126.2132317405
+TOI,testfiles/pr2392.tsp,50,20000,6441290.764193497
+TOI,testfiles/pr2392.tsp,50,20000,6556533.358415868
+TOI,testfiles/pr2392.tsp,50,20000,6451107.043055085
+TOI,testfiles/pr2392.tsp,50,20000,6360155.643766153
+TOI,testfiles/pr2392.tsp,50,20000,6371887.310937179
+TOI,testfiles/pr2392.tsp,50,20000,6449674.083314574
+TOI,testfiles/pr2392.tsp,50,20000,6514666.678124571
+TOI,testfiles/pr2392.tsp,50,20000,6340115.768328476
+TOI,testfiles/pr2392.tsp,50,20000,6333664.701434977
+TOI,testfiles/pr2392.tsp,50,20000,6328405.357309369
+TOI,testfiles/pr2392.tsp,50,20000,6439582.396038608
+TOI,testfiles/pr2392.tsp,50,20000,6514007.707997969
+TOI,testfiles/pr2392.tsp,50,20000,6398690.842107559
+TOI,testfiles/pr2392.tsp,50,20000,6392610.272520391
+TOI,testfiles/pr2392.tsp,50,20000,6390262.104907215
+TOI,testfiles/pr2392.tsp,50,20000,6430661.960267174
+TOI,testfiles/pr2392.tsp,50,20000,6425451.1677724095
+TOI,testfiles/pr2392.tsp,50,20000,6467752.521878466
+TOI,testfiles/pr2392.tsp,50,20000,6491885.858895411
+TOI,testfiles/pr2392.tsp,50,20000,6410626.429179358
+TOI,testfiles/usa13509.tsp,50,20000,1.3841272727595255E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3734553548876626E9
+TOI,testfiles/usa13509.tsp,50,20000,1.381310960616568E9
+TOI,testfiles/usa13509.tsp,50,20000,1.394980378482432E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3875322507888155E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3883806155427802E9
+TOI,testfiles/usa13509.tsp,50,20000,1.391121579549603E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3768366496526973E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3811087772619793E9
+TOI,testfiles/usa13509.tsp,50,20000,1.386184491976784E9
+TOI,testfiles/usa13509.tsp,50,20000,1.390436598989939E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3803546860520203E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3733531913228788E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3847614343544981E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3844389893059905E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3958383430617836E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3817734183767283E9
+TOI,testfiles/usa13509.tsp,50,20000,1.38203723014399E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3773031201847808E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3927938228733852E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3776509934726424E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3853282957931907E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3953542383551657E9
+TOI,testfiles/usa13509.tsp,50,20000,1.383770967079518E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3861576563402147E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3970613216443272E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3835245522191963E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3813941998749678E9
+TOI,testfiles/usa13509.tsp,50,20000,1.38941374896433E9
+TOI,testfiles/usa13509.tsp,50,20000,1.3794314594096928E9
+
+===========================================================================
+Phoenix Job Utilisation Reporting
+===========================================================================
+Job Name            : job.sh
+Job ID              : 11788198
+User                : a1698575
+Account             : compsci
+Cluster             : phoenix
+Partition           : skylake
+Nodes (List)        : 1 (p2n8)
+Cores               : 4
+GPUs                : 0
+State               : COMPLETED
+Submit              : 2018-08-15T22:05:57
+Start               : 2018-08-15T22:07:39
+End                 : 2018-08-16T10:37:47
+Walltime reserved   : 1-00:00:00
+Walltime elapsed (%):   12:30:08  (52.1% * reserved)
+CPU-time elapsed    : 50.01 core-hours
+% CPU used (Total)  : 25.06%    (12.53 core-hours)
+% User CPU (Compute): 25.05%    (12.53 core-hours)
+% System CPU (I/O)  :  0.01%    (0.00 core-hours)
+Mem reserved        : 1G/core
+% Mem used (Max)    : 66.11%    (676.92M/core) 
+Max Disk Write      : 0.00      (p2n8)
+Max Disk Read       : 64.58M    (p2n8)
+===========================================================================
