@@ -14,17 +14,21 @@ public class Population {
 		for (int i = 0; i<popsize; i++) {
 			Individual individual = new Individual(problem.size);
 			individual.randomise();
-			add(individual, problem);
+			eval_add(individual, problem);
 		}
 	}
 
-	public void add(Individual individual, TSPProblem problem) {
+	public void eval_add(Individual individual, TSPProblem problem)
+	// Evaluate and add an individual to the population
+	{
 		individual.evaluate(problem);
 		list.add(individual);
 	}
 
-	public void add(Population population, TSPProblem problem) {
-		for (int i=0; i<population.size(); i++) add(population.list.get(i), problem);
+	public void eval_add(Population population, TSPProblem problem)
+	// Evaluate and add a population to the population
+	{
+		for (int i=0; i<population.size(); i++) eval_add(population.list.get(i), problem);
 	}
 
 	// Sort so that lowest score is at entry 0
@@ -38,7 +42,7 @@ public class Population {
 
 	public double bestscore() {
 		sort();
-		return list.get(0).cost;
+		return list.get(0).cost();
 	}
 
 	public int size() {return list.size();}

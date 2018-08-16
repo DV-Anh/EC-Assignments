@@ -12,53 +12,60 @@ public class OrderCrossOver extends CrossOver {
 
 	public OrderCrossOver(int pcent) {percent=pcent;}
 
-	public Population breed(Population parents, TSPProblem problem) {
+	public Population breed(Population parents, TSPProblem problem)
+	// Perform Order Crossover on every pair of individuals in the parent population
+	// with a set percentage chance that the pair will or wont crossover
+	{
 		Population children = new Population();
-		for (int i = 0; i <parents.size()-1; i +=2) {
-			Individual parent1=parents.list.get(i);
-			Individual parent2=parents.list.get(i+1);
 
+		for (int i = 0; i<parents.size()-1; i +=2) {
+			Individual parent1=new Individual(parents.list.get(i));
+			Individual parent2=new Individual(parents.list.get(i+1));
+
+			// Make only the required percent of the population crossover
 			if (percent<=random.nextInt(100)){
-				children.add(parent1, problem);
-				children.add(parent2, problem);
+				children.eval_add(parent1, problem);
+				children.eval_add(parent2, problem);
 				continue;
 			}
 
-			int size=parent1.size;
-			int left=random.nextInt(size);
-			int right=left;
-			while (right==left) right=random.nextInt(size);
-			if (left>right) {
-				int temp=left;
-				left=right;
-				right=temp;
+			// Choose two different indexes for the crossover
+			int size=parent1.size();
+			int index1=random.nextInt(size);
+			int index2=index1;
+			while (index2==index1) index2=random.nextInt(size);
+
+			// Ensure index1 < index2 by swapping if needed
+			if (index1>index2) {
+				int temp=index1;
+				index1=index2;
+				index2=temp;
 			}
-			children.add(crossOver(parent1, parent2, left, right), problem);
-			children.add(crossOver(parent2, parent1, left, right), problem);
+
+			// Perform the actual crossover and add individuals to children population
+			children.eval_add(crossOver(parent1, parent2, index1, index2), problem);
+			children.eval_add(crossOver(parent2, parent1, index1, index2), problem);
 		}
 
 		return children;
 	}
 
-	private Individual crossOver(Individual parent1, Individual parent2, int left, int right) {
-		int size=parent1.size;
+	private Individual crossOver(Individual parent1, Individual parent2, int index1, int index2)
+	// Method performs the Order Crossover operation
+	{
+		int size=parent1.size();
 		Individual child = new Individual(size);
 
-		for (int index=0; index<size; index++)
-			child.permutation[index]=-1;
+		for (int index=index1; index<=index2; index++)
+			child.permutation[index] = parent1.permutation[index];
 
-		if (left<right) {
-			for (int index=left; index<=right; index++)
-				child.permutation[index] = parent1.permutation[index];
-
-			int pointer=right+1;
-			for (int index=right+1; index<right+size+1; index++)
+		int pointer=index2+1;
+		for (int index=index2+1; index<index2+size+1; index++)
+		{
+			if (!Arrays.asList(child.permutation).contains(parent2.permutation[index%size]))
 			{
-				if (!Arrays.asList(child.permutation).contains(parent2.permutation[index%size]))
-				{
-					child.permutation[pointer%size] = parent2.permutation[index%size];
-					pointer++;
-				}
+				child.permutation[pointer%size] = parent2.permutation[index%size];
+				pointer++;
 			}
 		}
 		return child;

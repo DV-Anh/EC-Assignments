@@ -16,7 +16,7 @@ public class LocalSearchExchange extends TSPSolver {
 		solution.randomise();
 		if (size<=2) {
 			solution.evaluate(problem);
-			return solution.cost;
+			return solution.cost();
 		}
 
 		boolean improving=true;
@@ -59,6 +59,6 @@ public class LocalSearchExchange extends TSPSolver {
 			}
 		}
 		solution.evaluate(problem);
-		return solution.cost;
+		return solution.cost();
 	}
 }

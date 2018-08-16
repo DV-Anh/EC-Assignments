@@ -36,25 +36,27 @@ public class tsp {
 	static ElitistSearch elitesearch = new ElitistSearch();
 
 	public static void error(String message)
-	// Method written by: Clint Gamlin (a1038415)
 	// Prints error message and exits program
 	{System.out.println("Error: "+message); System.exit(1);}
 
 	public static void main(String[] args)
-	// Method written by: Clint Gamlin (a1038415)
+	// Runs search using command line parameters
 	{
-		TSPProblem problem = new TSPProblem(args[args.length-1]);
+		// Read command line switches to set search parameters
 		set_algorithm(args);
 
+		// Read in map file
+		TSPProblem problem = new TSPProblem(args[args.length-1]);
+
+		// Run the algorithm, calculating and printing statistics
 		double cost=0;
 		double sum1=0;
 		double sum2=0;
 		double max=0;
 		double min=Double.POSITIVE_INFINITY;
 		for (int i=0; i<repetitions; i++) {
-			cost=solver.search(problem);
-			// try {cost=solver.search(problem);}
-			// catch(NullPointerException ex) {error("No valid algorithm selected");}
+			try {cost=solver.search(problem);}
+			catch(NullPointerException ex) {error("No valid algorithm selected");}
 			if (cost<min) min=cost;
 			if (cost>max) max=cost;
 			sum1+=cost;
@@ -69,10 +71,8 @@ public class tsp {
 	}
 
 	public static void set_algorithm(String[] args)
-	// Method written by: Clint Gamlin (a1038415)
 	// Reads in commmand line arguments and
 	// sets the algorithm parameters
-	// TODO: Add required options for InverOver
 	{
 		// Read through all but last argument
 		// ensuring argument format is correct
@@ -134,8 +134,8 @@ public class tsp {
 	}
 
 	public static int get_option_value(int position, String arg)
-	// Method written by: Clint Gamlin (a1038415)
 	// Returns integer value part of a command line argument
+	// from the "position" of the "arg" string onwards
 	{
 		int value=0;
 		try {

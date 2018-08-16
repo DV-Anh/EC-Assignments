@@ -18,11 +18,11 @@ public class TSPProblem {
 	private double[][] distanceMatrix;
 	public int size=0;
 
-	/**
-	 * Constructor reads file name, read and store TSP from the file to array of coordinates
-	 * @param filename name of problem file
-	 */
-	public TSPProblem(String filename){
+	public static void error(String message)
+	// Prints error message and exits program
+	{System.out.println("Error: "+message); System.exit(1);}
+
+	public TSPProblem(String filename) {
 		try (BufferedReader br = new BufferedReader(new FileReader(new File(filename)))){
 			int coordIndex = -1;
 			for(String line; (line = br.readLine()) != null;){
@@ -40,7 +40,8 @@ public class TSPProblem {
 						double dy = coordinates2D[1][coordIndex - 1] - coordinates2D[1][i];
 						distanceMatrix[coordIndex - 1][i] = Math.sqrt(dx*dx + dy*dy);
 					}
-				}else{
+				}
+				else {
 					if(line.startsWith(COORDSTART)){
 						coordIndex = 0; continue;
 					}
@@ -53,25 +54,16 @@ public class TSPProblem {
 					}
 				}
 			}
-		}catch (IOException e){
-			e.printStackTrace();
+		}
+		catch (IOException e){
+			error(" Cannot find map file "+filename);
 		}
 	}
 
-	/**
-	 * Return distance from node i to node j
-	 * @param i index i
-	 * @param j index j
-	 * @return distance from node i to node j
-	 */
 	public double distance(int i, int j){
 		return j > i ? distanceMatrix[j][i] : distanceMatrix[i][j];
 	}
-	/**
-	 * Returns cost of the given candidate
-	 * @param candidate the candidate
-	 * @return the cost
-	 */
+
 	public double cost(int[] candidate){
 		double cost = 0;
 		for (int i = 0; i < candidate.length - 1; i++) {

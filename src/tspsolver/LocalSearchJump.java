@@ -14,14 +14,13 @@ public class LocalSearchJump extends TSPSolver {
 		solution.permutation[j] = temp;
 	}
 
-	// Copied from LocalSearchExchange!!!
 	public double search(TSPProblem problem) {
 		int size = problem.size;
 		Individual solution=new Individual(problem.size);
 		solution.randomise();
 		if (size<=2) {
 			solution.evaluate(problem);
-			return solution.cost;
+			return solution.cost();
 		}
 
 		boolean improving=true;
@@ -58,6 +57,6 @@ public class LocalSearchJump extends TSPSolver {
 			}
 		}
 		solution.evaluate(problem);
-		return solution.cost;
+		return solution.cost();
 	}
 }
