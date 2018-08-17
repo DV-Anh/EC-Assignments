@@ -46,4 +46,10 @@ public class Population {
 	}
 
 	public int size() {return list.size();}
+	public double getWorstCost()
+	{
+		sort();
+		double worstcost =list.get(list.size()-1).cost();
+		return worstcost;
+	}
 }
