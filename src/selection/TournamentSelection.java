@@ -13,20 +13,22 @@ public class TournamentSelection extends Selection {
 	public TournamentSelection(int pcent) {percent=pcent;}
 
 	public Population choose(Population population, TSPProblem problem, int size)
-		// Chooses a subset from the total population
-		// then returns the best "size" number of individuals
-		// from that subset
+		// Chooses a subset from the total population 
+		// by effectively pulling a set number of individuals out of a hat
+		// (ie: uniformly random without replacement) and then returns
+		// the best "size" number of individuals from that subset
 	{
 		Population parents = new Population();
 
 		// Create a list of integers from 0 to population size
+		// which will be the numbers to "pull out of the hat"
 		List<Integer> intList = new ArrayList<Integer>();
 		for (int i=0; i<population.size(); i++) intList.add(i);
 
 		// Determine the number of competitors in the competition
 		// Either required percent of population, rounded up
 		// or at least the number of individuals required to be
-		// returned (which is int size)
+		// returned (which is int "size")
 		int competitors=(population.size()*percent+50)/100;
 		competitors=(competitors<size)? size : competitors;
 
@@ -40,7 +42,7 @@ public class TournamentSelection extends Selection {
 			parents.eval_add(new Individual(population.list.get(chosen)), problem);
 		}
 
-		// Cull the parents list down to "size" number required
+		// Cull the parents list down to the "size" number required
 		parents.kill_worst(competitors-size);
 		return parents;
 	}

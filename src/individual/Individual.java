@@ -1,5 +1,6 @@
 package individual;
 
+import java.util.Collections;
 import java.util.Random;
 import tspproblem.*;
 
@@ -10,7 +11,6 @@ public class Individual implements Comparable<Individual> {
 	private double cost;
 
 	public Individual(int sze) {
-		// Method written by: Clint Gamlin (a1038415)
 		size=sze;
 		permutation=new int[size];
 	}
@@ -26,7 +26,9 @@ public class Individual implements Comparable<Individual> {
 		return Double.compare(this.cost,other.cost);
 	}
 
-	public void randomise() {
+	public void randomise()
+	// Insertion shuffle
+	{
 		int index;
 		for (int i=0; i<size; i++) {
 			index = random.nextInt(i+1);
@@ -36,7 +38,6 @@ public class Individual implements Comparable<Individual> {
 	}
 
 	public void evaluate(TSPProblem problem) {
-		// Method written by: Clint Gamlin (a1038415)
 		cost=problem.cost(permutation);
 	}
 
