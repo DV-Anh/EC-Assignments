@@ -4,155 +4,108 @@ import tspproblem.TSPProblem;
 
 import java.util.*;
 
-/*
- * Author: Zizheng Pan
- * Date  : 31 July 2018
- *
- * There are some problems that still need to be solved.
- * 1. What if we pick the last element of another individual when choose c'
- *      the current solution is to change into another individual and pick c' again
- *
- * 2. Sometimes the code will fall into an infinite loop.
- *      line 144 - 147, when the counts of poplutions is less than 3
- *      line 136 - 163, So far, I can't figure out why.
- * 
- * Test Code in TSPProblem.java
- *      TSPProblem t = new TSPProblem("EIL76.tsp");
-        double IOCost = 0;
-        for (int i = 0; i<30; i++) {
-            IOOperatorForTSP IOTsp = new IOOperatorForTSP(t);
-            IOTsp.inverOverCalculate();
-            IOCost += IOTsp.lastMinCost;
-        }
-        System.out.println("Average Cost for 30 times: " + IOCost/30);
- */
-
 
 public class IOOperatorForTSP {
 
     public double lastMinCost = Double.POSITIVE_INFINITY;
-    public int population = 100;
+    public int population = 50;
 
     float p = 0.02f;
     int times = 0;
-    int equalTimes = 0;
+    int timelimit = 20000;
 
-    ArrayList<List<Integer>> populationList;
+    ArrayList<int[]> populationList;
     TSPProblem problem;
 
-    public IOOperatorForTSP(TSPProblem problem) {
-        this.populationList = new ArrayList<List<Integer>>();
+    public IOOperatorForTSP(TSPProblem problem,int pop_size, int gen_limit) {
+        this.populationList = new ArrayList<>();
         this.problem = problem;
+        timelimit=gen_limit;
+        pop_size=pop_size;
     }
 
     public void generatePopulation() {
+        int swapIndex,swapTemp;
+        Random rng = new Random();
         for (int i = 0; i < population; i++) {
-            List<Integer> list = new ArrayList<Integer>();
-            for (int j = 0; j < problem.size(); j++)
-                list.add(j);
-            Collections.shuffle(list);
-            populationList.add(list);
+            int[] individual = new int[problem.size()];
+            for (int j = 0; j < problem.size(); j++){
+                individual[i] = i;
+                swapIndex = rng.nextInt(i+1);
+                swapTemp = individual[i];
+                individual[i] = individual[swapIndex];
+                individual[swapIndex] = swapTemp;
+            }
+            populationList.add(individual);
         }
-    }
-
-    public double getCost(List<Integer> S) {
-        double cost = 0;
-        for (int i = 0; i < S.size() - 1; i++) {
-            cost += problem.distance(S.get(i), S.get(i + 1));
-        }
-        return cost + problem.distance(S.get(S.size() - 1), S.get(0));
     }
 
     public double getMinCost() {
         double minCost = Double.POSITIVE_INFINITY;
         for (int i = 0; i< populationList.size(); i++) {
-            List<Integer> individual = populationList.get(i);
-            double currentCost = getCost(individual);
+            int[] individual = populationList.get(i);
+            double currentCost = problem.cost(individual);
             minCost = minCost > currentCost ? currentCost : minCost;
         }
         return minCost;
     }
 
-    public boolean satifiedTermination() {
-        double currentCost = getMinCost();
-        if(times >= 20000) {return true;}
-        if (currentCost < lastMinCost) {
-            lastMinCost = currentCost;
-            equalTimes = 0;
-            return false;
-        } else {
-            if (equalTimes >= 500) {
-                return true;
-            }
-            equalTimes ++;
-            return false;
-        }
-
-    }
-
-    public static int getNextIndexFromIndividual(List<Integer> individual, int c) {
+    public static int getNextIndexFromIndividual(int[] individual, int c) {
         // Wrap around
-        return (individual.indexOf(c) + 1) % individual.size();
+        return (individual[c] + 1) % individual.length;
     }
 
-    public static void inverseSection(List<Integer> S, int c, int cp) {
+    public static void inverseSection(int[] S, int c, int cp) {
         int dir = cp > c ? 1 : -1;
         for (int i = c, j = cp; cp > c ? i < j: i > j ; i += dir, j -= dir) {
-            int temp = S.get(i);
-            S.set(i, S.get(j));
-            S.set(j, temp);
+            int temp = S[i];
+            S[i]=S[j];
+            S[j]=temp;
         }
     }
 
-    public void copyList(List<Integer> l1, List<Integer> l2) {
-        for (int i : l2) {
-            l1.add(i);
+    public void copyList(int[] l1, int[] l2) {
+        for (int i=0;i<l2.length;i++) {
+            l1[i]=l2[i];
         }
     }
     public void inverOverCalculate() {
         this.populationList.clear();
         generatePopulation();
         Random rd = new Random();
-        times = 0; equalTimes = 0;
-        while (!satifiedTermination()) {
+        times = 0;
+        while (times>=timelimit) {
             for (int i = 0; i < populationList.size(); i++) {
-                List<Integer> S = new ArrayList<>();
+                int[] S = new int[problem.size()];
                 copyList(S, populationList.get(i));
-                int c = S.get(rd.nextInt(S.size()));
+                int c = S[rd.nextInt(S.length)];
                 int cp;
-                int whileTime = 0;
                 do {
-                    whileTime ++;
                     double calp = Math.random();
                     if( calp <= p ) {
                         // select the city c' from the remaining cities in S'
                         do {
-                            cp = S.get(rd.nextInt(S.size()));
+                            cp = S[rd.nextInt(S.length)];
                         }while (cp == c);
                     } else {
                         // select (randomly) an individual from P
-                        List<Integer> randIndividual = populationList.get(rd.nextInt(populationList.size()));
-                        cp = randIndividual.get(getNextIndexFromIndividual(randIndividual, c));
+                        int[] randIndividual = populationList.get(rd.nextInt(populationList.size()));
+                        cp = randIndividual[getNextIndexFromIndividual(randIndividual, c)];
                     }
                     int nextC = getNextIndexFromIndividual(S, c);
                     int nextCP = getNextIndexFromIndividual(S, cp);
-                    int indexCP = (nextCP - 1 + S.size()) % S.size();
-                    if (nextC == indexCP || ((nextC - 1 + S.size()) % S.size()) == nextCP) {
+                    int indexCP = (nextCP - 1 + S.length) % S.length;
+                    if (nextC == indexCP || ((nextC - 1 + S.length) % S.length) == nextCP) {
                         break;
                     }
                     // inverse the section from the next city of city c to the city c' in S'
                     if(indexCP > nextC) inverseSection(S, nextC, indexCP);
                     else inverseSection(S, nextCP, nextC - 1);
                     c = cp;
-
-                    if (whileTime > 5000) {
-                        System.out.println("overflow - " + i);
-                        break;
-                    }
                 } while (true);
 
-                double costOfS = getCost(populationList.get(i));
-                double newCostOfS = getCost(S);
+                double costOfS = problem.cost(populationList.get(i));
+                double newCostOfS = problem.cost(S);
                 if (newCostOfS < costOfS) {
                     populationList.set(i, S);
                 }
