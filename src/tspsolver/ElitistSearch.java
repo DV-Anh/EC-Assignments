@@ -42,10 +42,10 @@ public class ElitistSearch extends TSPSolver {
 			population.kill_worst(2);
 
 			// Regularly display progress if display progress switch has been set
-			if (displayevery!=0 && (i+1)%displayevery==0) System.out.println((i+1)+" "+population.bestscore());
+			if (displayevery!=0 && (i+1)%displayevery==0) System.out.println((i+1)+" "+population.bestcost());
 		}
 
 		// Return the best cost found
-		return population.bestscore();
+		return population.bestcost();
 	}
 }

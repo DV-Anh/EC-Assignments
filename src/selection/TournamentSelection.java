@@ -39,6 +39,8 @@ public class TournamentSelection extends Selection {
 			index=random.nextInt(intList.size());
 			chosen=intList.get(index);
 			intList.remove(index);
+
+			// Add a clone of the chosen competitor to the parents list
 			parents.eval_add(new Individual(population.list.get(chosen)), problem);
 		}
 

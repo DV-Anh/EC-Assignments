@@ -17,8 +17,6 @@ public class InversionMutation extends Mutation {
 
 			// Chooses the index at one end of the inversion
 			// and the distance with wrap-around to the other end of the inversion
-			// Refactored from previous method that may have had to call nextInt multiple times
-			// and didn't use wrap-around
 			int size = population.list.get(i).size();
 			int position=random.nextInt(size);
 			int distance=1+random.nextInt(size-2);

@@ -17,7 +17,6 @@ public class SwapMutation extends Mutation {
 			if (percent<=random.nextInt(100)) continue;
 
 			// Choose one index and the distance to the next index with wrap-around
-			// Refactored from previous method that may have had to call nextInt multiple times
 			int size = population.list.get(i).size();
 			int position=random.nextInt(size);
 			int distance=1+random.nextInt(size-2);

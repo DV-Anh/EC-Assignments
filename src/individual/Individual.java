@@ -10,19 +10,25 @@ public class Individual implements Comparable<Individual> {
 	private int size;
 	private double cost;
 
-	public Individual(int sze) {
+	public Individual(int sze)
+	// Create a new individual with permutation size "sze"
+	{
 		size=sze;
 		permutation=new int[size];
 	}
 
-	public Individual(Individual individual) {
+	public Individual(Individual individual)
+	// Clone an individual
+	{
 		permutation=individual.permutation.clone();
 		size=individual.size;
 		cost=individual.cost;
 	}
 
 	@Override
-	public int compareTo(Individual other) {
+	public int compareTo(Individual other)
+	// Create comparison for sorting so that lowest score is at entry 0
+	{
 		return Double.compare(this.cost,other.cost);
 	}
 
@@ -37,11 +43,17 @@ public class Individual implements Comparable<Individual> {
 		}
 	}
 
-	public void evaluate(TSPProblem problem) {
+	public void evaluate(TSPProblem problem)
+	// Evaluate individual against "problem" tspproblem
+	{
 		cost=problem.cost(permutation);
 	}
 
-	public int size() {return size;}
+	public int size()
+	// Return size of individual
+	{return size;}
 
-	public double cost() {return cost;}
+	public double cost()
+	// Return cost of individual
+	{return cost;}
 }

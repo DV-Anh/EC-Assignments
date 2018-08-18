@@ -16,8 +16,6 @@ public class InsertMutation extends Mutation {
 			if (percent<=random.nextInt(100)) continue;
 
 			// Choose the index to move and the distance to move it with wrap-around
-			// Refactored from previous method that may have had to call nextInt multiple times
-			// and didn't use wrap-around
 			int size = population.list.get(i).size();
 			int position=random.nextInt(size);
 			int distance=1+random.nextInt(size-2);

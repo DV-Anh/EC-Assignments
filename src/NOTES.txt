@@ -1,2 +1,0 @@
--mv > -mn > -ms
--xe > -xo > -xc > -xp
