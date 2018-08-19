@@ -5,6 +5,11 @@ import individual.*;
 
 public class LocalSearchJump extends TSPSolver {
 
+	public LocalSearchJump(TSPSolver solver)
+	// Copy parameters from another solver
+	// Required to make it easier to code front end
+	{super(solver);}
+
 	void generateNeighbor(Individual solution, int i, int j) {
 		int dir = j > i ? 1 : -1;
 		int temp = solution.permutation[i];

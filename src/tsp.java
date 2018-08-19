@@ -19,6 +19,7 @@ import crossover.*;
 // -p(int)		Population search with (int) number of individuals, eg: -p100
 // -g(int)		Run population method for (int) number of generations, eg: -g10000
 // -d(int)		Display the best population result every (int) generation, eg: -d1000
+// -i(int)		InverOver search with the random selector set to (int)% probability
 // -mn(int)		Insert mutation (int)% of the time
 // -ms(int)		Swap mutation (int)% of the time
 // -mv(int)		Inversion mutation (int)% of the time
@@ -32,8 +33,11 @@ import crossover.*;
 public class tsp {
 	static final String INVALID="Invalid option ";
 	static int repetitions=1;
-	static TSPSolver solver;
-	static ElitistSearch elitesearch = new ElitistSearch();
+
+	// Start with the default solver that can store parameters
+	// (so the parameters can be copied to any solver chosen)
+	// but returns an error message if a search is attempted
+	static TSPSolver solver=new TSPSolver();
 
 	public static void error(String message)
 	// Prints error message and exits program
@@ -55,8 +59,7 @@ public class tsp {
 		double max=0;
 		double min=Double.POSITIVE_INFINITY;
 		for (int i=0; i<repetitions; i++) {
-			try {cost=solver.search(problem);}
-			catch(NullPointerException ex) {error("No valid algorithm selected");}
+			cost=solver.search(problem);
 			if (cost<min) min=cost;
 			if (cost>max) max=cost;
 			sum1+=cost;
@@ -84,47 +87,46 @@ public class tsp {
 			if (args[i].charAt(0)!='-') error(INVALID+args[i]);
 
 			// use switch-cases to parse argument
-			switch(args[i].charAt(1)){
+			switch (args[i].charAt(1)){
 			case 'r': repetitions=get_option_value(2,args[i]); break;
-			case 'g': elitesearch.generations=get_option_value(2,args[i]); break;
-			case 'd': elitesearch.displayevery=get_option_value(2,args[i]); break;
-
+			case 'g': solver.generations=get_option_value(2,args[i]); break;
+			case 'd': solver.displayevery=get_option_value(2,args[i]); break;
+			case 'p': solver.population_size=get_option_value(2,args[i]); break;
+			case 'i':
+				solver = new InverOverSearch(solver);
+				// InverOver uses InversionMutation to do inversion and store percentage
+				solver.mutation=new InversionMutation(get_option_value(2,args[i]));
+				break;
 			case 'l':
-				switch(args[i].charAt(2)){
-				case '2': solver = new LocalSearchInversion(); break;
-				case '3': solver = new LocalSearchJump(); break;
-				case '4': solver = new LocalSearchExchange(); break;
+				switch (args[i].charAt(2)){
+				case '2': solver = new LocalSearchInversion(solver); break;
+				case '3': solver = new LocalSearchJump(solver); break;
+				case '4': solver = new LocalSearchExchange(solver); break;
 				default: error(INVALID+args[i]);
 				}
 				break;
-			case 'p':
-				solver = elitesearch;
-				elitesearch.population_size=get_option_value(2,args[i]);
-				break;
 			case 'm':
-				solver = elitesearch;
 				switch(args[i].charAt(2)){
-				case 'n': elitesearch.mutation=new InsertMutation(get_option_value(3,args[i])); break;
-				case 's': elitesearch.mutation=new SwapMutation(get_option_value(3,args[i])); break;
-				case 'v': elitesearch.mutation=new InversionMutation(get_option_value(3,args[i])); break;
+				case 'n': solver.mutation=new InsertMutation(get_option_value(3,args[i])); break;
+				case 's': solver.mutation=new SwapMutation(get_option_value(3,args[i])); break;
+				case 'v': solver.mutation=new InversionMutation(get_option_value(3,args[i])); break;
 				default: error(INVALID+args[i]);
 				}
 				break;
 			case 's':
-				solver = elitesearch;
-				switch(args[i].charAt(2)){
-				case 'f': elitesearch.selection=new FitnessProportionateSelection();break;
-				case 't': elitesearch.selection=new TournamentSelection(get_option_value(3,args[i]));break;
+				solver = new ElitistSearch(solver);
+				switch (args[i].charAt(2)){
+				case 'f': solver.selection=new FitnessProportionateSelection();break;
+				case 't': solver.selection=new TournamentSelection(get_option_value(3,args[i]));break;
 				default: error(INVALID+args[i]);
 				}
 				break;
 			case 'x':
-				solver = elitesearch;
 				switch(args[i].charAt(2)){
-				case 'c': elitesearch.crossover=new CycleCrossOver(get_option_value(3,args[i]));break;
-				case 'e': elitesearch.crossover=new EdgeCrossOver(get_option_value(3,args[i]));break;
-				case 'o': elitesearch.crossover=new OrderCrossOver(get_option_value(3,args[i]));break;
-				case 'p': elitesearch.crossover=new PMXCrossOver(get_option_value(3,args[i]));break;
+				case 'c': solver.crossover=new CycleCrossOver(get_option_value(3,args[i]));break;
+				case 'e': solver.crossover=new EdgeCrossOver(get_option_value(3,args[i]));break;
+				case 'o': solver.crossover=new OrderCrossOver(get_option_value(3,args[i]));break;
+				case 'p': solver.crossover=new PMXCrossOver(get_option_value(3,args[i]));break;
 				default: error(INVALID+args[i]);
 				}
 				break;					

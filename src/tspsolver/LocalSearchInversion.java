@@ -5,6 +5,11 @@ import individual.*;
 
 public class LocalSearchInversion extends TSPSolver {
 
+	public LocalSearchInversion(TSPSolver solver)
+	// Copy parameters from another solver
+	// Required to make it easier to code front end
+	{super(solver);}
+
 	void generateNeighbor(Individual solution, int i, int j) {
 		for (int k = i, l = j; k < l; k++, l--) {
 			int temp = solution.permutation[k];

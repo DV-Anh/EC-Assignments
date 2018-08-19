@@ -4,6 +4,12 @@ import tspproblem.*;
 import individual.*;
 
 public class LocalSearchExchange extends TSPSolver {
+
+	public LocalSearchExchange(TSPSolver solver)
+	// Copy parameters from another solver
+	// Required to make it easier to code front end
+	{super(solver);}
+
 	void generateNeighbor(Individual solution, int i, int j) {
 		int temp = solution.permutation[i];
 		solution.permutation[i] = solution.permutation[j];

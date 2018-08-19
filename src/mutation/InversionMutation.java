@@ -3,6 +3,7 @@ package mutation;
 import java.util.*;
 
 import population.*;
+import individual.*;
 
 public class InversionMutation extends Mutation {
 	public Random random = new Random();
@@ -17,17 +18,23 @@ public class InversionMutation extends Mutation {
 
 			// Chooses the index at one end of the inversion
 			// and the distance with wrap-around to the other end of the inversion
-			int size = population.list.get(i).size();
+			Individual individual=population.list.get(i);
+			int size=individual.size();
 			int position=random.nextInt(size);
 			int distance=1+random.nextInt(size-2);
 
-			// Inverts by swapping with wrap-around
-			int temp;
-			for (int j=0; j<(distance+1)>>1; j++) {
-				temp=population.list.get(i).permutation[(position+j)%size];
-				population.list.get(i).permutation[(position+j)%size]=population.list.get(i).permutation[(position+distance-j)%size];
-				population.list.get(i).permutation[(position+distance-j)%size]=temp;
+			invert(individual, position, distance);
 			}
+		}
+
+	public void invert(Individual individual, int position, int distance)
+	// Inverts by swapping with wrap-around
+	{
+		int temp;
+		for (int j=0; j<(distance+1)>>1; j++) {
+			temp=individual.permutation[(position+j)%individual.size()];
+			individual.permutation[(position+j)%individual.size()]=individual.permutation[(position+distance-j)%individual.size()];
+			individual.permutation[(position+distance-j)%individual.size()]=temp;
 		}
 	}
 }

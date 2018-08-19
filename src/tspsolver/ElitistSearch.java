@@ -12,17 +12,23 @@ import individual.*;
 
 public class ElitistSearch extends TSPSolver {
 	public Random random = new Random();
-	public int population_size;
-	public int generations;
-	public int displayevery=0;
-	public Mutation mutation;
-	public Selection selection;
-	public CrossOver crossover;
+
+	public ElitistSearch(TSPSolver solver)
+	// Copy parameters from another solver
+	// Required to make it easier to code front end
+	{super(solver);}
 
 	public double search(TSPProblem problem)
 	// Performs an (n+2) elitist search for a selected number of generations
 	// using interchangable parent selection, crossover, and mutation methods
 	{
+		// Check that we have a fully defined algorithm
+		if (population_size<=0) error("Population size not set");
+		if (generations<=0) error("Number of generations not set");
+		if (selection==null) error("Selection type not set");
+		if (crossover==null) error("CrossOver type not set");
+		if (mutation==null) error("Mutation type not set");
+
 		Population population = new Population(population_size, problem);
 		for (int i=0; i<generations; i++) {
 
